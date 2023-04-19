@@ -353,6 +353,8 @@ namespace biuropodrozyprojekt
 
         private void button3_Click(object sender, EventArgs e)
         {
+
+            CityClass city = new CityClass();
             Form form = new Form()
             {
                 Text = "Cities Datagrid",
@@ -395,6 +397,14 @@ namespace biuropodrozyprojekt
                 BackColor = Color.Red,
                 FlatStyle = FlatStyle.Flat
             };
+
+            btnDelete.Click += new EventHandler((senderDelete, eDelete) =>
+            {
+                var selectedRow = dataGridView.SelectedRows[0];
+                int cityId = (int)selectedRow.Cells[0].Value;
+                city.DeleteCity(cityId);
+                form.Close();
+            });
 
             form.Controls.Add(btnDelete);
             DataSet dataSet = new DataSet();
