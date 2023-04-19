@@ -356,16 +356,47 @@ namespace biuropodrozyprojekt
             Form form = new Form()
             {
                 Text = "Cities Datagrid",
-                Width = 420,
-                Height = 400,
+                Width = 490,
+                Height = 560,
             };
             DataGridView dataGridView = new DataGridView()
             {
                 DataMember = "CountryCity",
                 Height = 400,
                 Width = 420,
+                Location = new Point(10, 10),
             };
 
+            dataGridView.DataBindings.Clear();
+            dataGridView.Columns.Clear();
+            dataGridView.DataSource = null;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.GridColor = Color.Gray;
+            dataGridView.BackgroundColor = Color.LightGray;
+            dataGridView.AllowUserToAddRows = false;
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.ReadOnly = true;
+            dataGridView.AllowUserToResizeColumns = false;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dataGridView.RowsDefaultCellStyle.Font = new Font("Century Gothic", 10);
+            dataGridView.RowsDefaultCellStyle.ForeColor = Color.Black;
+            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
+            dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 10, FontStyle.Bold);
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
+            Button btnDelete = new Button
+            {
+                Text = "Delete city",
+                Font = new Font("Century Gothic", 10, FontStyle.Regular),
+                Size = new Size(130, 40),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Location = new Point(300, 440),
+                BackColor = Color.Red,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            form.Controls.Add(btnDelete);
             DataSet dataSet = new DataSet();
             DataTable citiesTable = new DataTable("CountryCity");
 
