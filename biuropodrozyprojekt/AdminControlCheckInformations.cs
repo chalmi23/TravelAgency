@@ -141,12 +141,13 @@ namespace biuropodrozyprojekt
 
                 Label labelUserId = new Label()
                 { 
-                    Text = "               id: ",
+                    Text = "id: ",
                     Height = 25,
                     Width = 120,
                     Location = new Point(20, 20),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 Label labelUserId2 = new Label()
@@ -166,7 +167,8 @@ namespace biuropodrozyprojekt
                     Width = 120,
                     Location = new Point(20, 70),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 TextBox textBoxUserName = new TextBox()
@@ -181,12 +183,13 @@ namespace biuropodrozyprojekt
 
                 Label labelPassword = new Label()
                 {
-                    Text = " password: ",
+                    Text = "password: ",
                     Height = 25,
                     Width = 120,
                     Location = new Point(20, 120),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 TextBox textBoxPassword = new TextBox()
@@ -201,12 +204,13 @@ namespace biuropodrozyprojekt
 
                 Label labelEmail = new Label()
                 {
-                    Text = "         email: ",
+                    Text = "email: ",
                     Height = 25,
                     Width = 120,
                     Location = new Point(20, 170),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 TextBox textBoxEmail = new TextBox()
@@ -221,12 +225,13 @@ namespace biuropodrozyprojekt
 
                 Label labelRole = new Label()
                 {
-                    Text = "          role: ",
+                    Text = "role: ",
                     Height = 25,
                     Width = 120,
                     Location = new Point(20, 220),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 ComboBox comboBoxRoleName = new ComboBox
@@ -349,6 +354,105 @@ namespace biuropodrozyprojekt
 
             form.Controls.Add(btnDelete);
 
+
+            dataGridView.CellDoubleClick += (sender2, e2) =>
+            {
+                int rowIndex = e2.RowIndex;
+                DataGridViewRow row = dataGridView.Rows[rowIndex];
+                int countryId = (int)row.Cells["CountryId"].Value;
+
+                country = country.GetCountry(countryId);
+
+                Form formCountry = new Form()
+                {
+                    Text = "Edit country",
+                    Width = 360,
+                    Height = 300,
+                    BackColor = SystemColors.ButtonHighlight,
+                    MaximumSize = new Size(360, 300),
+                    MinimumSize = new Size(360, 300),
+                };
+
+                FlowLayoutPanel flowLayoutPanelUser = new FlowLayoutPanel
+                {
+                    FlowDirection = FlowDirection.LeftToRight,
+                    AutoScroll = true,
+                    Dock = DockStyle.Fill
+                };
+                formCountry.Controls.Add(flowLayoutPanelUser);
+
+                Panel panel = new Panel
+                {
+                    Width = 300,
+                    Height = 250
+                };
+
+                Label labelCountryId = new Label()
+                {
+                    Text = "id: ",
+                    Height = 25,
+                    Width = 120,
+                    Location = new Point(20, 20),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
+                };
+
+                Label labelCountryId2 = new Label()
+                {
+                    Text = country.CountryIdGS.ToString(),
+                    Height = 20,
+                    Width = 150,
+                    Location = new Point(140, 20),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 12)
+                };
+
+                Label labelCountryIName = new Label()
+                {
+                    Text = "country: ",
+                    Height = 25,
+                    Width = 120,
+                    Location = new Point(20, 70),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
+                };
+
+                TextBox textBoxCountryName = new TextBox()
+                {
+                    Text = country.CountryNameGS,
+                    Height = 20,
+                    Width = 150,
+                    Location = new Point(140, 70),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 12)
+                };
+
+                Button btnApply = new Button
+                {
+                    Text = "Apply changes",
+                    Font = new Font("Century Gothic", 10, FontStyle.Regular),
+                    Size = new Size(150, 40),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Location = new Point(140, 170),
+                    BackColor = Color.White,
+                    FlatStyle = FlatStyle.Flat
+                };
+
+                btnApply.Click += new EventHandler((senderApply, eApply) =>
+                {
+                    country.UpdateCountry(countryId, textBoxCountryName.Text.ToString());
+                    formCountry.Close();
+                    form.Close();
+                });
+
+                Control[] controlsDetails = { btnApply, labelCountryId, labelCountryId2, textBoxCountryName, labelCountryIName };
+                panel.Controls.AddRange(controlsDetails);
+                flowLayoutPanelUser.Controls.Add(panel);
+                formCountry.Controls.Add(flowLayoutPanelUser);
+                formCountry.Show();
+            };
             form.Show();
         }
 

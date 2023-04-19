@@ -53,9 +53,9 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.button2.Location = new System.Drawing.Point(779, 372);
+            this.button2.Location = new System.Drawing.Point(19, 332);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(170, 70);
+            this.button2.Size = new System.Drawing.Size(170, 43);
             this.button2.TabIndex = 1;
             this.button2.Text = "Show all Countries";
             this.button2.UseVisualStyleBackColor = true;
@@ -64,7 +64,7 @@
             // button3
             // 
             this.button3.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.button3.Location = new System.Drawing.Point(19, 149);
+            this.button3.Location = new System.Drawing.Point(19, 166);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(170, 43);
             this.button3.TabIndex = 2;
@@ -75,7 +75,7 @@
             // button4
             // 
             this.button4.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.button4.Location = new System.Drawing.Point(19, 473);
+            this.button4.Location = new System.Drawing.Point(19, 516);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(170, 43);
             this.button4.TabIndex = 3;
@@ -86,7 +86,7 @@
             // button6
             // 
             this.button6.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.button6.Location = new System.Drawing.Point(779, 246);
+            this.button6.Location = new System.Drawing.Point(775, 16);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(170, 70);
             this.button6.TabIndex = 5;
@@ -97,7 +97,7 @@
             // button9
             // 
             this.button9.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.button9.Location = new System.Drawing.Point(19, 300);
+            this.button9.Location = new System.Drawing.Point(19, 381);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(170, 43);
             this.button9.TabIndex = 8;
@@ -108,7 +108,7 @@
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.button10.Location = new System.Drawing.Point(19, 198);
+            this.button10.Location = new System.Drawing.Point(19, 215);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(170, 43);
             this.button10.TabIndex = 9;
@@ -130,7 +130,7 @@
             // button12
             // 
             this.button12.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.button12.Location = new System.Drawing.Point(19, 522);
+            this.button12.Location = new System.Drawing.Point(19, 565);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(170, 43);
             this.button12.TabIndex = 11;
