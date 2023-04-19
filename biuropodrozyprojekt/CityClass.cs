@@ -43,6 +43,26 @@ namespace biuropodrozyprojekt
             }
             return null;
         }
+
+        public UserClass UpdateCity(int cityId, string cityName, int countryId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "UPDATE CountryCity SET City = @cityName, CountryId = @countryId WHERE CityId = @cityId";
+                    command.Parameters.AddWithValue("@cityId", cityId);
+                    command.Parameters.AddWithValue("@cityName", cityName);
+                    command.Parameters.AddWithValue("@countryId", countryId);
+
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("City updated!", "AdminTool", MessageBoxButtons.OK);
+                }
+            }
+            return null;
+        }
         public CityClass DeleteCity(int cityId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

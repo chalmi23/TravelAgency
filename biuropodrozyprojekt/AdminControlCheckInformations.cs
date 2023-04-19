@@ -437,11 +437,11 @@ namespace biuropodrozyprojekt
                 Form formCity = new Form()
                 {
                     Text = "Edit city",
-                    Width = 360,
-                    Height = 400,
+                    Width = 330,
+                    Height = 300,
                     BackColor = SystemColors.ButtonHighlight,
-                    MaximumSize = new Size(360, 400),
-                    MinimumSize = new Size(360, 400),
+                    MaximumSize = new Size(330, 300),
+                    MinimumSize = new Size(330, 300),
                 };
 
                 FlowLayoutPanel flowLayoutPanelUser = new FlowLayoutPanel
@@ -455,7 +455,7 @@ namespace biuropodrozyprojekt
                 Panel panel = new Panel
                 {
                     Width = 300,
-                    Height = 350
+                    Height = 250
                 };
 
                 Label labelUserId = new Label()
@@ -490,7 +490,7 @@ namespace biuropodrozyprojekt
                     TextAlign = ContentAlignment.TopRight
                 };
 
-                TextBox textBoxUserName = new TextBox()
+                TextBox textBoxCityName = new TextBox()
                 {
                     Text = city.CityNameGS,
                     Height = 20,
@@ -556,8 +556,25 @@ namespace biuropodrozyprojekt
                     comboBoxCountryName.SelectedIndex = selectedCountryIndex;
                 }
 
+                Button btnApply = new Button
+                {
+                    Text = "Apply changes",
+                    Font = new Font("Century Gothic", 10, FontStyle.Regular),
+                    Size = new Size(150, 40),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Location = new Point(140, 200),
+                    BackColor = Color.White,
+                    FlatStyle = FlatStyle.Flat
+                };
 
-                Control[] controlsDetails = { labelUserId, labelUserId2, labelUserName, textBoxUserName, comboBoxCountryName, labelCountryName };
+                btnApply.Click += new EventHandler((senderApply, eApply) =>
+                {
+                    city.UpdateCity(cityId, textBoxCityName.Text.ToString(), comboBoxCountryName.SelectedIndex + 1);
+                    formCity.Close();
+                    form.Close();
+                });
+
+                Control[] controlsDetails = { labelUserId, labelUserId2, labelUserName, textBoxCityName, comboBoxCountryName, labelCountryName, btnApply };
                 panel.Controls.AddRange(controlsDetails);
                 flowLayoutPanelUser.Controls.Add(panel);
                 formCity.Controls.Add(flowLayoutPanelUser);
