@@ -12,6 +12,7 @@ using System.Net.Mail;
 using System.IO;
 using System.Configuration;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace biuropodrozyprojekt
 {
@@ -140,12 +141,13 @@ namespace biuropodrozyprojekt
 
                 Label labelUserId = new Label()
                 { 
-                    Text = "               id: ",
+                    Text = "id: ",
                     Height = 25,
                     Width = 120,
                     Location = new Point(20, 20),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 Label labelUserId2 = new Label()
@@ -165,7 +167,8 @@ namespace biuropodrozyprojekt
                     Width = 120,
                     Location = new Point(20, 70),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 TextBox textBoxUserName = new TextBox()
@@ -180,12 +183,13 @@ namespace biuropodrozyprojekt
 
                 Label labelPassword = new Label()
                 {
-                    Text = " password: ",
+                    Text = "password: ",
                     Height = 25,
                     Width = 120,
                     Location = new Point(20, 120),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 TextBox textBoxPassword = new TextBox()
@@ -200,12 +204,13 @@ namespace biuropodrozyprojekt
 
                 Label labelEmail = new Label()
                 {
-                    Text = "         email: ",
+                    Text = "email: ",
                     Height = 25,
                     Width = 120,
                     Location = new Point(20, 170),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 TextBox textBoxEmail = new TextBox()
@@ -220,12 +225,13 @@ namespace biuropodrozyprojekt
 
                 Label labelRole = new Label()
                 {
-                    Text = "          role: ",
+                    Text = "role: ",
                     Height = 25,
                     Width = 120,
                     Location = new Point(20, 220),
                     BackColor = SystemColors.ButtonHighlight,
-                    Font = new Font("Century Gothic", 14)
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
                 };
 
                 ComboBox comboBoxRoleName = new ComboBox
@@ -238,10 +244,10 @@ namespace biuropodrozyprojekt
                 switch (user.RoleGS)
                 {
                     case 1:
-                        comboBoxRoleName.SelectedIndex = 0; // domyślna wartość to "admin"
+                        comboBoxRoleName.SelectedIndex = 0; 
                         break;
                     case 2:
-                        comboBoxRoleName.SelectedIndex = 1; // domyślna wartość to "user"
+                        comboBoxRoleName.SelectedIndex = 1; 
                         break;
                 }
 
@@ -348,24 +354,164 @@ namespace biuropodrozyprojekt
 
             form.Controls.Add(btnDelete);
 
+
+            dataGridView.CellDoubleClick += (sender2, e2) =>
+            {
+                int rowIndex = e2.RowIndex;
+                DataGridViewRow row = dataGridView.Rows[rowIndex];
+                int countryId = (int)row.Cells["CountryId"].Value;
+
+                country = country.GetCountry(countryId);
+
+                Form formCountry = new Form()
+                {
+                    Text = "Edit country",
+                    Width = 360,
+                    Height = 300,
+                    BackColor = SystemColors.ButtonHighlight,
+                    MaximumSize = new Size(360, 300),
+                    MinimumSize = new Size(360, 300),
+                };
+
+                FlowLayoutPanel flowLayoutPanelUser = new FlowLayoutPanel
+                {
+                    FlowDirection = FlowDirection.LeftToRight,
+                    AutoScroll = true,
+                    Dock = DockStyle.Fill
+                };
+                formCountry.Controls.Add(flowLayoutPanelUser);
+
+                Panel panel = new Panel
+                {
+                    Width = 300,
+                    Height = 250
+                };
+
+                Label labelCountryId = new Label()
+                {
+                    Text = "id: ",
+                    Height = 25,
+                    Width = 120,
+                    Location = new Point(20, 20),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
+                };
+
+                Label labelCountryId2 = new Label()
+                {
+                    Text = country.CountryIdGS.ToString(),
+                    Height = 20,
+                    Width = 150,
+                    Location = new Point(140, 20),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 12)
+                };
+
+                Label labelCountryIName = new Label()
+                {
+                    Text = "country: ",
+                    Height = 25,
+                    Width = 120,
+                    Location = new Point(20, 70),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
+                };
+
+                TextBox textBoxCountryName = new TextBox()
+                {
+                    Text = country.CountryNameGS,
+                    Height = 20,
+                    Width = 150,
+                    Location = new Point(140, 70),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 12)
+                };
+
+                Button btnApply = new Button
+                {
+                    Text = "Apply changes",
+                    Font = new Font("Century Gothic", 10, FontStyle.Regular),
+                    Size = new Size(150, 40),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Location = new Point(140, 170),
+                    BackColor = Color.White,
+                    FlatStyle = FlatStyle.Flat
+                };
+
+                btnApply.Click += new EventHandler((senderApply, eApply) =>
+                {
+                    country.UpdateCountry(countryId, textBoxCountryName.Text.ToString());
+                    formCountry.Close();
+                    form.Close();
+                });
+
+                Control[] controlsDetails = { btnApply, labelCountryId, labelCountryId2, textBoxCountryName, labelCountryIName };
+                panel.Controls.AddRange(controlsDetails);
+                flowLayoutPanelUser.Controls.Add(panel);
+                formCountry.Controls.Add(flowLayoutPanelUser);
+                formCountry.Show();
+            };
             form.Show();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+
+            CityClass city = new CityClass();
             Form form = new Form()
             {
                 Text = "Cities Datagrid",
-                Width = 420,
-                Height = 400,
+                Width = 490,
+                Height = 560,
             };
             DataGridView dataGridView = new DataGridView()
             {
                 DataMember = "CountryCity",
                 Height = 400,
                 Width = 420,
+                Location = new Point(10, 10),
             };
 
+            dataGridView.DataBindings.Clear();
+            dataGridView.Columns.Clear();
+            dataGridView.DataSource = null;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.GridColor = Color.Gray;
+            dataGridView.BackgroundColor = Color.LightGray;
+            dataGridView.AllowUserToAddRows = false;
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.ReadOnly = true;
+            dataGridView.AllowUserToResizeColumns = false;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dataGridView.RowsDefaultCellStyle.Font = new Font("Century Gothic", 10);
+            dataGridView.RowsDefaultCellStyle.ForeColor = Color.Black;
+            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
+            dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 10, FontStyle.Bold);
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
+            Button btnDelete = new Button
+            {
+                Text = "Delete city",
+                Font = new Font("Century Gothic", 10, FontStyle.Regular),
+                Size = new Size(130, 40),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Location = new Point(300, 440),
+                BackColor = Color.Red,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            btnDelete.Click += new EventHandler((senderDelete, eDelete) =>
+            {
+                var selectedRow = dataGridView.SelectedRows[0];
+                int cityId = (int)selectedRow.Cells[0].Value;
+                city.DeleteCity(cityId);
+                form.Close();
+            });
+
+            form.Controls.Add(btnDelete);
             DataSet dataSet = new DataSet();
             DataTable citiesTable = new DataTable("CountryCity");
 
@@ -383,8 +529,161 @@ namespace biuropodrozyprojekt
             dataSet.Tables.Add(citiesTable);
             form.Controls.Add(dataGridView);
             dataGridView.DataSource = dataSet;
-
             form.Show();
+
+            dataGridView.CellDoubleClick += (sender2, e2) =>
+            {
+                int rowIndex = e2.RowIndex;
+                DataGridViewRow row = dataGridView.Rows[rowIndex];
+                int cityId = (int)row.Cells["CityId"].Value;
+                city = city.GetCity(cityId);
+
+                Form formCity = new Form()
+                {
+                    Text = "Edit city",
+                    Width = 330,
+                    Height = 300,
+                    BackColor = SystemColors.ButtonHighlight,
+                    MaximumSize = new Size(330, 300),
+                    MinimumSize = new Size(330, 300),
+                };
+
+                FlowLayoutPanel flowLayoutPanelUser = new FlowLayoutPanel
+                {
+                    FlowDirection = FlowDirection.LeftToRight,
+                    AutoScroll = true,
+                    Dock = DockStyle.Fill
+                };
+                formCity.Controls.Add(flowLayoutPanelUser);
+
+                Panel panel = new Panel
+                {
+                    Width = 300,
+                    Height = 250
+                };
+
+                Label labelUserId = new Label()
+                {
+                    Text = "id: ",
+                    Height = 25,
+                    Width = 120,
+                    Location = new Point(20, 20),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
+                };
+
+                Label labelUserId2 = new Label()
+                {
+                    Text = city.CityIdGS.ToString(),
+                    Height = 20,
+                    Width = 150,
+                    Location = new Point(140, 20),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 12)
+                };
+
+                Label labelUserName = new Label()
+                {
+                    Text = "city: ",
+                    Height = 25,
+                    Width = 120,
+                    Location = new Point(20, 70),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight
+                };
+
+                TextBox textBoxCityName = new TextBox()
+                {
+                    Text = city.CityNameGS,
+                    Height = 20,
+                    Width = 150,
+                    Location = new Point(140, 70),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 12)
+                };
+
+                Label labelCountryName = new Label()
+                {
+                    Text = "country: ",
+                    Height = 25,
+                    Width = 120,
+                    Location = new Point(20, 120),
+                    BackColor = SystemColors.ButtonHighlight,
+                    Font = new Font("Century Gothic", 14),
+                    TextAlign = ContentAlignment.TopRight,
+                };
+
+                ComboBox comboBoxCountryName = new ComboBox()
+                {
+                    Width = 150,
+                    Location = new Point(140, 120),
+                    DisplayMember = "Country",
+                    ValueMember = "CountryId",
+                    Font = new Font("Century Gothic", 14),
+                };
+
+                DataTable countriesTable = new DataTable();
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlDataAdapter adapter = new SqlDataAdapter();
+                    SqlCommand command = new SqlCommand("SELECT CountryId, Country FROM Country", connection);
+
+                    adapter.SelectCommand = command;
+                    adapter.Fill(countriesTable);
+                }
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("SELECT CountryId, Country FROM Country", connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    int selectedCountryIndex = -1;
+                    while (reader.Read())
+                    {
+                        int id = (int)reader["CountryId"];
+                        string name = reader["Country"].ToString();
+
+                        CountryClass item = new CountryClass { CountryIdGS = id, CountryNameGS = name };
+                        comboBoxCountryName.Items.Add(item.CountryNameGS);
+
+                        if (city.CountryIdGS == item.CountryIdGS)
+                        {
+                            selectedCountryIndex = comboBoxCountryName.Items.Count - 1;
+                        }
+                    }
+                    comboBoxCountryName.SelectedIndex = selectedCountryIndex;
+                }
+
+                Button btnApply = new Button
+                {
+                    Text = "Apply changes",
+                    Font = new Font("Century Gothic", 10, FontStyle.Regular),
+                    Size = new Size(150, 40),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Location = new Point(140, 200),
+                    BackColor = Color.White,
+                    FlatStyle = FlatStyle.Flat
+                };
+
+                btnApply.Click += new EventHandler((senderApply, eApply) =>
+                {
+                    city.UpdateCity(cityId, textBoxCityName.Text.ToString(), comboBoxCountryName.SelectedIndex + 1);
+                    formCity.Close();
+                    form.Close();
+                });
+
+                Control[] controlsDetails = { labelUserId, labelUserId2, labelUserName, textBoxCityName, comboBoxCountryName, labelCountryName, btnApply };
+                panel.Controls.AddRange(controlsDetails);
+                flowLayoutPanelUser.Controls.Add(panel);
+                formCity.Controls.Add(flowLayoutPanelUser);
+                formCity.Show();
+            };
         }
 
         private void button4_Click(object sender, EventArgs e)
