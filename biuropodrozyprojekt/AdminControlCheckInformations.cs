@@ -1218,25 +1218,46 @@ namespace biuropodrozyprojekt
             Form form = new Form()
             {
                 Text = "UserVacations DataGrid",
-                Width = 500,
-                Height = 600,
+                Width = 480,
+                Height = 470,
             };
             DataGridView dataGridView = new DataGridView()
             {
                 DataMember = "UserVacation",
-                Height = 600,
-                Width = 500,
+                Height = 350,
+                Width = 440,
+                Location = new Point(10,10),
             };
 
             DataSet dataSet = new DataSet();
             DataTable UserVacationTable = new DataTable("UserVacation");
+
+
+            dataGridView.DataBindings.Clear();
+            dataGridView.Columns.Clear();
+            dataGridView.DataSource = null;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.GridColor = Color.Gray;
+            dataGridView.BackgroundColor = Color.LightGray;
+            dataGridView.AllowUserToAddRows = false;
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.ReadOnly = true;
+            dataGridView.AllowUserToResizeColumns = false;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dataGridView.RowsDefaultCellStyle.Font = new Font("Century Gothic", 10);
+            dataGridView.RowsDefaultCellStyle.ForeColor = Color.Black;
+            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
+            dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 10, FontStyle.Bold);
+            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
                 SqlDataAdapter adapter = new SqlDataAdapter();
-                SqlCommand command = new SqlCommand("SELECT * FROM UserVacation", connection);
+                SqlCommand command = new SqlCommand("SELECT Users.UserId, Users.UserName, UserVacation.VacationId, UserVacation.NumberOfPeople FROM UserVacation INNER JOIN Users ON users.userid = uservacation.userid", connection);
                 
                 adapter.SelectCommand = command;
                 adapter.Fill(UserVacationTable);
@@ -1245,6 +1266,57 @@ namespace biuropodrozyprojekt
             dataSet.Tables.Add(UserVacationTable);           
             form.Controls.Add(dataGridView);
             dataGridView.DataSource = dataSet;
+
+            dataGridView.Columns[0].Width = 100;
+            dataGridView.Columns[1].Width = 100;
+            dataGridView.Columns[2].Width = 100;
+            dataGridView.Columns[3].Width = 136;
+
+            Button btnDelete = new Button
+            {
+                Text = "Delete record",
+                Font = new Font("Century Gothic", 10, FontStyle.Regular),
+                Size = new Size(130, 40),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Location = new Point(320, 370),
+                BackColor = Color.Red,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            btnDelete.Click += (sender2, e2) =>
+            {
+                try
+                {
+                    int reservationId = (int)dataGridView.SelectedRows[0].Cells["Id"].Value;
+                    int reservedSeats = (int)dataGridView.SelectedRows[0].Cells["NumberOfPeople"].Value;
+                    int vacationId = (int)dataGridView.SelectedRows[0].Cells["VacationId"].Value;
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        SqlCommand command = new SqlCommand("DELETE FROM UserVacation WHERE Id = @Id", connection);
+                        command.Parameters.AddWithValue("@Id", reservationId);
+                        command.ExecuteNonQuery();
+
+
+
+                        command = new SqlCommand("UPDATE Vacation SET MaxPeople = MaxPeople + @reservedSeats WHERE VacationId = @vacationId", connection);
+                        command.Parameters.AddWithValue("@reservedSeats", reservedSeats);
+                        command.Parameters.AddWithValue("@vacationId", vacationId);
+
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Reservation canceled!", "Info", MessageBoxButtons.OK);
+
+                    }
+                    form.Close();
+                }
+                catch (System.ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Choose record!", "Info", MessageBoxButtons.OK);
+                }
+            };
+
+            form.Controls.Add(btnDelete);
 
             form.Show();
         }

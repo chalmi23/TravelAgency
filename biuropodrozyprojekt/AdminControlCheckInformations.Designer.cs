@@ -37,6 +37,7 @@
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
+            this.addNewTripButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -138,11 +139,22 @@
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
+            // addNewTripButton
+            // 
+            this.addNewTripButton.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.addNewTripButton.Location = new System.Drawing.Point(597, 283);
+            this.addNewTripButton.Name = "addNewTripButton";
+            this.addNewTripButton.Size = new System.Drawing.Size(170, 43);
+            this.addNewTripButton.TabIndex = 12;
+            this.addNewTripButton.Text = "Add new trip";
+            this.addNewTripButton.UseVisualStyleBackColor = true;
+            // 
             // AdminControlCheckInformations
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Controls.Add(this.addNewTripButton);
             this.Controls.Add(this.button12);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button10);
@@ -169,5 +181,6 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button addNewTripButton;
     }
 }
