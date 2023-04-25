@@ -89,5 +89,10 @@ namespace biuropodrozyprojekt
                 MessageBox.Show("Hotel name cannot be empty!", "Error 505", MessageBoxButtons.OK);
             }
         }
+
+        private void hotelRatingTx_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

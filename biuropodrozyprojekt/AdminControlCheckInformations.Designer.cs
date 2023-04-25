@@ -142,12 +142,13 @@
             // addNewTripButton
             // 
             this.addNewTripButton.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.addNewTripButton.Location = new System.Drawing.Point(597, 283);
+            this.addNewTripButton.Location = new System.Drawing.Point(775, 122);
             this.addNewTripButton.Name = "addNewTripButton";
             this.addNewTripButton.Size = new System.Drawing.Size(170, 43);
             this.addNewTripButton.TabIndex = 12;
             this.addNewTripButton.Text = "Add new trip";
             this.addNewTripButton.UseVisualStyleBackColor = true;
+            this.addNewTripButton.Click += new System.EventHandler(this.addNewTripButton_Click);
             // 
             // AdminControlCheckInformations
             // 

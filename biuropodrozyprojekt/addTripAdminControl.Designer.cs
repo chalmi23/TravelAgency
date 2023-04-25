@@ -273,6 +273,7 @@
             this.hotelRatingTx.Name = "hotelRatingTx";
             this.hotelRatingTx.Size = new System.Drawing.Size(100, 32);
             this.hotelRatingTx.TabIndex = 27;
+            this.hotelRatingTx.ValueChanged += new System.EventHandler(this.hotelRatingTx_ValueChanged);
             // 
             // priceTx
             // 

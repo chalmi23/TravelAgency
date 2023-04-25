@@ -1766,5 +1766,242 @@ namespace biuropodrozyprojekt
                 }               
             }
         }
+
+        private void addNewTripButton_Click(object sender, EventArgs e)
+        {
+            Form form = new Form
+            {
+                Text = "Add new trip",
+                Width = 500,
+                Height = 600,
+            };
+
+            Label labelCountry = new Label
+            {
+                Text = "country: ",
+                Width = 200,
+                Location = new Point(10, 10),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            Label labelCity = new Label
+            {
+                Text = "city: ",
+                Width = 200,
+                Location = new Point(10, 50),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            ComboBox comboBoxCountries = new ComboBox
+            {
+                Width = 150,
+                Location = new Point(210, 10),
+                Font = new Font("Century Gothic", 10)
+            };
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("SELECT CountryId, Country FROM Country", connection);
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    int id = (int)reader["CountryId"];
+                    string name = reader["Country"].ToString();
+
+                    CountryClass item = new CountryClass { CountryIdGS = id, CountryNameGS = name };
+                    comboBoxCountries.Items.Add(item.CountryNameGS);
+                    comboBoxCountries.SelectedIndex = 0;
+                }
+            }
+
+            ComboBox comboBoxCities = new ComboBox
+            {
+                Width = 150,
+                Location = new Point(210, 50),
+                Font = new Font("Century Gothic", 10)
+            };
+
+            string selectedCountryName = comboBoxCountries.Items[0].ToString();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("SELECT CountryCity.CityId, CountryCity.City, Country.CountryId FROM CountryCity INNER JOIN Country ON Country.CountryId = CountryCity.CountryId WHERE Country.Country=@CountryName", connection);
+                command.Parameters.AddWithValue("@CountryName", selectedCountryName);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int id = (int)reader["CityId"];
+                    string name = reader["City"].ToString();
+                    int countryId = (int)reader["CountryId"];
+                    CityClass item = new CityClass { CityIdGS = id, CityNameGS = name, CountryIdGS = countryId };
+                    comboBoxCities.Items.Add(item.CityNameGS);
+                    comboBoxCities.SelectedIndex = 0;
+                }
+            }
+
+            comboBoxCountries.SelectedIndexChanged += (senderCity, eCity) =>
+            {
+                string selectedCountry = comboBoxCountries.SelectedItem.ToString();
+
+                comboBoxCities.Items.Clear();
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand("SELECT City FROM CountryCity WHERE CountryId = (SELECT CountryId FROM Country WHERE Country = @SelectedCountry)", connection);
+                    command.Parameters.AddWithValue("@SelectedCountry", selectedCountry);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        comboBoxCities.Items.Add(reader["City"].ToString());
+                    }
+
+                    if (comboBoxCities.Items.Count > 0)
+                    {
+                        comboBoxCities.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        comboBoxCities.Text = null;
+                    }
+
+                }
+            };
+
+            Label labelType = new Label()
+            {
+                Text = "type: ",
+                Width = 200,
+                Location = new Point(10, 90),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            ComboBox comboBoxTypeName = new ComboBox
+            {
+                Width = 150,
+                Location = new Point(210, 90),
+                Font = new Font("Century Gothic", 10)
+            };
+            comboBoxTypeName.Items.AddRange(new[] { "National", "International" });
+            comboBoxTypeName.SelectedIndex = 0;
+
+
+            Label labelPeople = new Label()
+            {
+                Text = "people limit: ",
+                Width = 200,
+                Location = new Point(10, 130),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            NumericUpDown numericPeople = new NumericUpDown()
+            {
+                Value = 0,
+                Maximum = 1000,
+                Height = 25,
+                Width = 120,
+                Location = new Point(210, 130),
+                BackColor = SystemColors.ButtonHighlight,
+                Font = new Font("Century Gothic", 12)
+            };
+
+            Label labelPrice = new Label()
+            {
+                Text = "price: ",
+                Width = 200,
+                Location = new Point(10, 170),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            NumericUpDown numericPrice = new NumericUpDown()
+            {
+                Maximum = 1000000,
+                Value = 0,
+                Height = 25,
+                Width = 120,
+                Location = new Point(210, 170),
+                BackColor = SystemColors.ButtonHighlight,
+                Font = new Font("Century Gothic", 12)
+            };
+
+            Label labelHotelName = new Label()
+            {
+                Text = "hotel name: ",
+                Height = 25,
+                Width = 200,
+                Location = new Point(10, 210),
+                Font = new Font("Century Gothic", 14),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            TextBox textBoxHotelName = new TextBox()
+            {
+                Text = "empty",
+                Height = 25,
+                Width = 200,
+                Location = new Point(210, 210),
+                BackColor = SystemColors.ButtonHighlight,
+                Font = new Font("Century Gothic", 12)
+            };
+
+            Label labelHotelRating = new Label()
+            {
+                Text = "hotel rating: ",
+                Height = 25,
+                Width = 200,
+                Location = new Point(10, 250),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            NumericUpDown numericHotelRating = new NumericUpDown()
+            {
+                Maximum = 10,
+                Value = 1,
+                Height = 25,
+                Width = 120,
+                Location = new Point(210, 250),
+                BackColor = SystemColors.ButtonHighlight,
+                Font = new Font("Century Gothic", 12)
+            };
+
+            Label labelVehicleType = new Label()
+            {
+                Text = "vehicle: ",
+                Height = 25,
+                Width = 200,
+                Location = new Point(10, 290),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            ComboBox comboBoxVehicleType = new ComboBox
+            {
+                Width = 150,
+                Location = new Point(210, 290),
+                Font = new Font("Century Gothic", 10)
+            };
+            comboBoxVehicleType.Items.AddRange(new[] { "Plane", "Bus", "Train", "Cruise ship" });
+            comboBoxVehicleType.SelectedIndex = 0;
+
+            Control[] controlsDetails = { labelCountry , comboBoxVehicleType, comboBoxCountries, labelCity, comboBoxCities, labelType, comboBoxTypeName, labelPeople , numericPeople, numericHotelRating, numericPrice, labelHotelName, labelHotelRating, labelPrice, labelVehicleType, textBoxHotelName};
+
+            form.Controls.AddRange(controlsDetails);
+
+            form.Show();
+        }
     }
 }
