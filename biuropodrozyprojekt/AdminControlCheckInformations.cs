@@ -33,6 +33,8 @@ namespace biuropodrozyprojekt
                 Width = 660,
                 Text = "All users",
                 Height = 550,
+                MaximumSize = new Size(660, 550),
+                MinimumSize = new Size(660, 550),
             };
 
             DataGridView dataGridView = new DataGridView()
@@ -287,6 +289,8 @@ namespace biuropodrozyprojekt
                 Text = "Countries",
                 Width = 550,
                 Height = 500,
+                MaximumSize = new Size(550, 500),
+                MinimumSize = new Size(550, 500),
             };
             DataGridView dataGridView = new DataGridView()
             {
@@ -465,6 +469,8 @@ namespace biuropodrozyprojekt
                 Text = "Cities Datagrid",
                 Width = 490,
                 Height = 560,
+                MaximumSize = new Size(490, 560),
+                MinimumSize = new Size(490, 560),
             };
             DataGridView dataGridView = new DataGridView()
             {
@@ -691,13 +697,15 @@ namespace biuropodrozyprojekt
             Form form = new Form()
             {
                 Text = "Travel DataGrid",
-                Width = 1150,
+                Width = 1150,     
                 Height = 500,
+                MaximumSize = new Size(1150, 500),
+                MinimumSize = new Size(1150, 500),
             };
             DataGridView dataGridView = new DataGridView()
             {
                 DataMember = "Vacation",
-                Width = 1150,
+                Width = 1110,
                 Height = 350,
                 Location = new Point(10, 10),
             };
@@ -739,6 +747,7 @@ namespace biuropodrozyprojekt
             dataGridView.DataSource = dataSet;
 
             dataGridView.Columns[5].Width = 130;
+            dataGridView.Columns[7].Width = 80;
             dataGridView.Columns[9].Width = 110;
             dataGridView.Columns[10].Width = 100;
 
@@ -780,7 +789,7 @@ namespace biuropodrozyprojekt
                 {
                     Text = "Edit holiday",
                     Width = 800,
-                    Height = 700,
+                    Height = 600,
                     BackColor = SystemColors.ButtonHighlight,
                     MaximumSize = new Size(800, 600),
                     MinimumSize = new Size(800, 600),
@@ -977,8 +986,8 @@ namespace biuropodrozyprojekt
 
                 NumericUpDown numericPeople = new NumericUpDown()
                 {
-                    Value = holiday.MaxPeopleGS,
                     Maximum = 1000,
+                    Value = holiday.MaxPeopleGS,        
                     Height = 25,
                     Width = 120,
                     Location = new Point(140, 180),
@@ -1220,6 +1229,8 @@ namespace biuropodrozyprojekt
                 Text = "UserVacations DataGrid",
                 Width = 480,
                 Height = 470,
+                MaximumSize = new Size(480, 470),
+                MinimumSize = new Size(480, 470),
             };
             DataGridView dataGridView = new DataGridView()
             {
@@ -1328,6 +1339,8 @@ namespace biuropodrozyprojekt
                 Text = "Roles DataGrid",
                 Width = 200,
                 Height = 250,
+                MaximumSize = new Size(200, 250),
+                MinimumSize = new Size(200, 250),
             };
             DataGridView dataGridView = new DataGridView()
             {
@@ -1364,6 +1377,8 @@ namespace biuropodrozyprojekt
                 Text = "Add Country",
                 Width = 350,
                 Height = 200,
+                MaximumSize = new Size(350, 200),
+                MinimumSize = new Size(350, 200),
             };
 
             Label labelCountryName = new Label()
@@ -1422,6 +1437,8 @@ namespace biuropodrozyprojekt
                 Text = "Add City",
                 Width = 350,
                 Height = 200,
+                MaximumSize = new Size(350, 200),
+                MinimumSize = new Size(350, 200),
             };
 
             Label labelCityName = new Label()
@@ -1507,6 +1524,8 @@ namespace biuropodrozyprojekt
                 Text = "Add User",
                 Width = 360,
                 Height = 300,
+                MaximumSize = new Size(360, 300),
+                MinimumSize = new Size(360, 300),
             };
 
             Label labelUserName = new Label
@@ -1654,6 +1673,8 @@ namespace biuropodrozyprojekt
                 Text = "Travel DataGrid",
                 Width = 1108,
                 Height = 450,
+                MaximumSize = new Size(1108, 450),
+                MinimumSize = new Size(1108, 450),
                 BackColor = SystemColors.ButtonHighlight
             };
             DataGridView dataGridView = new DataGridView
@@ -1675,6 +1696,7 @@ namespace biuropodrozyprojekt
             dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Gray;
             dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 10, FontStyle.Bold);
             dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView.BackgroundColor = Color.LightGray;
             form.Controls.Add(dataGridView);
 
             DataSet dataSet = new DataSet();
@@ -1773,7 +1795,9 @@ namespace biuropodrozyprojekt
             {
                 Text = "Add new trip",
                 Width = 500,
-                Height = 600,
+                Height = 670,
+                MaximumSize = new Size(500, 670),
+                MinimumSize = new Size(500, 670),
             };
 
             Label labelCountry = new Label
@@ -1997,7 +2021,104 @@ namespace biuropodrozyprojekt
             comboBoxVehicleType.Items.AddRange(new[] { "Plane", "Bus", "Train", "Cruise ship" });
             comboBoxVehicleType.SelectedIndex = 0;
 
-            Control[] controlsDetails = { labelCountry , comboBoxVehicleType, comboBoxCountries, labelCity, comboBoxCities, labelType, comboBoxTypeName, labelPeople , numericPeople, numericHotelRating, numericPrice, labelHotelName, labelHotelRating, labelPrice, labelVehicleType, textBoxHotelName};
+            Label labelShortDescription = new Label()
+            {
+                Text = "Short Desctipton",
+                Height = 25,
+                Width = 400,
+                Location = new Point(10, 410),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.TopCenter
+            };
+
+            TextBox textBoxShortDescription = new TextBox()
+            {
+                Text = "empty",
+                Height = 80,
+                Width = 360,
+                Location = new Point(50, 440),
+                Multiline = true,
+                BackColor = SystemColors.ButtonHighlight,
+                Font = new Font("Century Gothic", 12),
+                MaxLength = 100,
+            };
+
+            textBoxShortDescription.TextChanged += (senderSD, eSD) =>
+            {
+                if (textBoxShortDescription.Text.Length > 90 && textBoxShortDescription.Text.Length < 100)
+                {
+                    textBoxShortDescription.BackColor = Color.LightCoral;
+                }
+                else if (textBoxShortDescription.Text.Length == 100)
+                {
+                    textBoxShortDescription.BackColor = Color.Red;
+                }
+                else
+                {
+                    textBoxShortDescription.BackColor = SystemColors.ButtonHighlight;
+                }
+            };
+
+            Label labelDepartureDate = new Label()
+            {
+                Text = "departure: ",
+                Width = 200,
+                Location = new Point(10, 330),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            DateTimePicker dateTimePicker = new DateTimePicker()
+            {
+                Format = DateTimePickerFormat.Custom,
+                CustomFormat = "dd.MM.yyyy",
+                Location = new Point(210, 330),
+                Width = 120,
+                Font = new Font("Century Gothic", 12),
+                Height = 25
+            };
+
+            Label labelArrivalDate = new Label()
+            {
+                Text = "arrival: ",
+                Width = 200,
+                Location = new Point(10, 370),
+                Font = new Font("Century Gothic", 12),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            DateTimePicker dateTimePickerArrival = new DateTimePicker()
+            {
+                Format = DateTimePickerFormat.Custom,
+                CustomFormat = "dd.MM.yyyy",
+                Location = new Point(210, 370),
+                Width = 120,
+                Font = new Font("Century Gothic", 12),
+                Height = 25
+            };
+
+
+            Button btnAdd = new Button
+            {
+                Text = "Add trip",
+                Font = new Font("Century Gothic", 10, FontStyle.Regular),
+                Size = new Size(130, 40),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Location = new Point(335, 570),
+                BackColor = Color.LightGreen,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            btnAdd.Click += new EventHandler((senderApply, eApply) =>
+            {
+                HolidaysClass holiday = new HolidaysClass();
+                labelCountry.Text = comboBoxCountries.Text.ToString();
+                holiday.addNewVacation(comboBoxTypeName.SelectedIndex + 1, comboBoxCountries.Text.ToString(), comboBoxCities.Text.ToString(), numericPrice.Value, dateTimePicker.Value.ToString("dd.MM.yyyy"), dateTimePickerArrival.Value.ToString("dd.MM.yyyy"), (int)numericPeople.Value, textBoxHotelName.Text.ToString(), (int)numericHotelRating.Value, comboBoxVehicleType.SelectedIndex + 1, textBoxShortDescription.Text.ToString());
+                form.Close();
+            });
+
+
+            Control[] controlsDetails = { btnAdd, textBoxShortDescription, labelShortDescription, dateTimePicker, dateTimePickerArrival, labelDepartureDate, labelArrivalDate, labelCountry, comboBoxVehicleType, comboBoxCountries, labelCity, comboBoxCities, labelType, comboBoxTypeName, labelPeople , numericPeople, numericHotelRating, numericPrice, labelHotelName, labelHotelRating, labelPrice, labelVehicleType, textBoxHotelName};
 
             form.Controls.AddRange(controlsDetails);
 

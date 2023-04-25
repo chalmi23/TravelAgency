@@ -15,22 +15,17 @@ namespace biuropodrozyprojekt
         public AdminForm()
         {
             InitializeComponent();
-            var addNewTripPanel = new addTripAdminControl();
-                tripAddPanel.Controls.Add(addNewTripPanel);
 
             var panelAdminCheck = new AdminControlCheckInformations();
                 panelAdminCheckInf.Controls.Add(panelAdminCheck);
         }
         private void addNewTripToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tripAddPanel.Visible = true;
-            editTripsPanel.Visible = false;
             panelAdminCheckInf.Visible = false;
         }
 
         private void checkInformationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tripAddPanel.Visible = false;
             panelAdminCheckInf.Visible = true;
         }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -41,6 +36,11 @@ namespace biuropodrozyprojekt
         {
             UserForm userForm = new UserForm();
             userForm.ShowDialog();
+        }
+
+        private void panelAdminCheckInf_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
