@@ -544,7 +544,7 @@ namespace biuropodrozyprojekt
 
                     Panel panelDetails = new Panel
                     {
-                        Width = formDetails.Width,
+                        Width = formDetails.Width-100,
                         Height = formDetails.Height
                     };
 
@@ -581,7 +581,25 @@ namespace biuropodrozyprojekt
                         Location = new Point(0, 200)
                     };
 
-                    Control[] controlsDetails = { picTravelAgency, lblCountryDetails, lblCityDetails };
+                    Label lblShortDesc = new Label
+                    {
+                        Text = vacation.ShortDescription,
+                        Font = new Font("Century Gothic", 15),
+                        Size = new Size(formDetails.Width/2, 100),
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Location = new Point(230, 230)
+                    };
+
+                    Label lblVehicleType = new Label
+                    {
+                        Text = "way of travel: " + vacation.VehicleType,
+                        Font = new Font("Century Gothic", 13),
+                        Width = 220,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Location = new Point(30, 350)
+                    };
+
+                    Control[] controlsDetails = { picTravelAgency, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
 
                     panelDetails.Controls.AddRange(controlsDetails);
                     flowLayoutPanelDetails.Controls.Add(panelDetails);
