@@ -625,7 +625,24 @@ namespace biuropodrozyprojekt
                         Location = new Point(60, 390)
                     };
 
-                    Control[] controlsDetails = { picTravelAgency, picVehicle, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
+                    Label lblHotelRating = new Label
+                    {
+                        Text = "rating: " + vacation.HotelRating,
+                        Font = new Font("Century Gothic", 13),
+                        Width = 220,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Location = new Point(100, 450)
+                    };
+
+                    PictureBox picRating = new PictureBox
+                    {
+                        Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\star.png")),
+                        Size = new Size(35, 35),
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        Location = new Point(60, 440)
+                    };
+
+                    Control[] controlsDetails = { picTravelAgency, picVehicle, lblHotelRating, picRating, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
 
                     panelDetails.Controls.AddRange(controlsDetails);
                     flowLayoutPanelDetails.Controls.Add(panelDetails);
