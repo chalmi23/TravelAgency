@@ -32,7 +32,7 @@ namespace biuropodrozyprojekt
                 _vacationId = vacationId;
             }
         }
-        public class Vacation
+        public class Vacation //rzeczy do usunięcia
         {
             public int VacationId { get; set; }
             public string Country { get; set; }
@@ -45,7 +45,9 @@ namespace biuropodrozyprojekt
             public string DepartureDate { get; set; }
             public string ArrivalDate { get; set; }
             public int Price { get; set; }
-            public Vacation(int id, string country, string city, byte[] photoBytes, string shortDescription, string vehicleType, string hotelName, int hotelRating, string departureDate, string arrivalDate, int price)
+
+            public int MaxPeople { get; set; }
+            public Vacation(int id, string country, string city, byte[] photoBytes, string shortDescription, string vehicleType, string hotelName, int hotelRating, string departureDate, string arrivalDate, int price, int maxPeople)
             {
                 VacationId = id;
                 Country = country;
@@ -58,6 +60,7 @@ namespace biuropodrozyprojekt
                 DepartureDate = departureDate;
                 ArrivalDate = arrivalDate;
                 Price = price;
+                MaxPeople = maxPeople;
             }
         }
 
@@ -712,6 +715,7 @@ namespace biuropodrozyprojekt
                         Location = new Point(720, 650),
                         Width = 80,
                         Height = 20,
+                        DecimalPlaces = 0,
                     };
 
                     Label label = new Label()
@@ -731,6 +735,13 @@ namespace biuropodrozyprojekt
                     formDetails.Controls.Add(flowLayoutPanelDetails);
 
                     formDetails.Show();
+
+                    btnReserve.Click += new EventHandler((senderApply, eApply) =>
+                    {
+                        UserVacationClass userVacation = new UserVacationClass();
+                        userVacation.addUserVacation(vacation.VacationId,vacation.MaxPeople,Form1.idUser,(int)numericUpDown.Value);
+                        formDetails.Close();
+                    });
                 };
 
             }
@@ -744,7 +755,7 @@ namespace biuropodrozyprojekt
             {
                 connection.Open();
 
-                SqlCommand command = new SqlCommand("SELECT Vacation.VacationId, Country.Country, CountryCity.City, MAX(Photos.Photo) AS Photo, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationID = Vacation.VacationId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId INNER JOIN Country ON Country.CountryId = Vacation.CountryId LEFT JOIN Photos ON Photos.VacationId = Vacation.VacationId GROUP BY Vacation.VacationId, Country.Country, CountryCity.City, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price", connection);
+                SqlCommand command = new SqlCommand("SELECT Vacation.VacationId, Country.Country, CountryCity.City, MAX(Photos.Photo) AS Photo, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationID = Vacation.VacationId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId INNER JOIN Country ON Country.CountryId = Vacation.CountryId LEFT JOIN Photos ON Photos.VacationId = Vacation.VacationId GROUP BY Vacation.VacationId, Country.Country, CountryCity.City, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople", connection);
 
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -752,12 +763,12 @@ namespace biuropodrozyprojekt
                 {
                     if (!reader.IsDBNull(3)&& !reader.IsDBNull(4))
                     {
-                        Vacation vacation = new Vacation(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), (byte[])reader["Photo"], reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10));
+                        Vacation vacation = new Vacation(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), (byte[])reader["Photo"], reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
                         vacations.Add(vacation);
                     }
                     else
                     {
-                        Vacation vacation = new Vacation(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), null, reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10));
+                        Vacation vacation = new Vacation(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), null, reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
                         vacations.Add(vacation);
                     }
                 }

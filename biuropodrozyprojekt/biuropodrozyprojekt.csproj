@@ -139,6 +139,7 @@
     <Compile Include="UserForm.Designer.cs">
       <DependentUpon>UserForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserVacationClass.cs" />
     <EmbeddedResource Include="AdminControlCheckInformations.resx">
       <DependentUpon>AdminControlCheckInformations.cs</DependentUpon>
     </EmbeddedResource>
