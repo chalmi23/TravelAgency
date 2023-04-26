@@ -109,7 +109,6 @@ namespace biuropodrozyprojekt
                 Location = new Point(form.Width - 110, 550),
                 Width = 80,
                 Height = 20,
-
             };
 
             Label label1 = new Label()
@@ -566,7 +565,7 @@ namespace biuropodrozyprojekt
                     Label lblCountryDetails = new Label
                     {
                         Text = vacation.Country,
-                        Font = new Font("Century Gothic", 24),
+                        Font = new Font("Century Gothic", 24, FontStyle.Bold),
                         Size = new Size(formDetails.Width, 50),
                         TextAlign = ContentAlignment.MiddleCenter,
                         Location = new Point(0, 150)
@@ -578,7 +577,7 @@ namespace biuropodrozyprojekt
                         Font = new Font("Century Gothic", 20),
                         Size = new Size(formDetails.Width, 50),
                         TextAlign = ContentAlignment.MiddleCenter,
-                        Location = new Point(0, 200)
+                        Location = new Point(0, 190)
                     };
 
                     Label lblShortDesc = new Label
@@ -694,7 +693,38 @@ namespace biuropodrozyprojekt
                         Location = new Point(picprice.Right + 5, picprice.Top)
                     };
 
-                    Control[] controlsDetails = { picTravelAgency, picVehicle, picArr, picprice,  lblprice, picDepart, lblArr, lblDepart, lblHotelRating, picRating, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
+                    Button btnReserve = new Button
+                    {
+                        Text = "Reserve",
+                        Font = new Font("Century Gothic", 13, FontStyle.Regular),
+                        Size = new Size(200, 40),
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        Location = new Point(720, 700),
+                        BackColor = Color.LightGreen,
+                        FlatStyle = FlatStyle.Flat
+                    };
+
+                    NumericUpDown numericUpDown = new NumericUpDown()
+                    {
+                        BackColor = SystemColors.Window,
+                        ForeColor = SystemColors.WindowText,
+                        Font = new Font("Century Gothic", 14, FontStyle.Bold),
+                        Location = new Point(720, 650),
+                        Width = 80,
+                        Height = 20,
+                    };
+
+                    Label label = new Label()
+                    {
+                        Text = "Number of Travelers",
+                        Width = 200,
+                        Location = new Point(715, 625),
+                        BackColor = SystemColors.ButtonHighlight,
+                        Font = new Font("Century Gothic", 12),
+                        TextAlign = ContentAlignment.MiddleLeft
+                    };
+
+                    Control[] controlsDetails = { picTravelAgency, label, picVehicle, picArr, numericUpDown, picprice, btnReserve,  lblprice, picDepart, lblArr, lblDepart, lblHotelRating, picRating, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
 
                     panelDetails.Controls.AddRange(controlsDetails);
                     flowLayoutPanelDetails.Controls.Add(panelDetails);
