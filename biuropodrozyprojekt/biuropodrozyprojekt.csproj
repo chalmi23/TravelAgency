@@ -106,6 +106,7 @@
     </Compile>
     <Compile Include="HolidayDateClass.cs" />
     <Compile Include="HolidaysClass.cs" />
+    <Compile Include="HolidaysValuesClass.cs" />
     <Compile Include="logowanieUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
