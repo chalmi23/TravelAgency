@@ -544,7 +544,7 @@ namespace biuropodrozyprojekt
 
                     Panel panelDetails = new Panel
                     {
-                        Width = formDetails.Width-100,
+                        Width = formDetails.Width-50,
                         Height = formDetails.Height
                     };
 
@@ -596,7 +596,7 @@ namespace biuropodrozyprojekt
                         Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\types.png")),
                         Size = new Size(35, 35),
                         SizeMode = PictureBoxSizeMode.StretchImage,
-                        Location = new Point(60, 340),
+                        Location = new Point(60, 390),
                     };
 
                     Label lblVehicleType = new Label
@@ -605,7 +605,7 @@ namespace biuropodrozyprojekt
                         Font = new Font("Century Gothic", 13),
                         Width = 220,
                         TextAlign = ContentAlignment.MiddleLeft,
-                        Location = new Point(100, 350)
+                        Location = new Point(100, 400)
                     };
 
                     Label lblHotelName = new Label
@@ -614,7 +614,7 @@ namespace biuropodrozyprojekt
                         Font = new Font("Century Gothic", 13),
                         Width = 220,
                         TextAlign = ContentAlignment.MiddleLeft,
-                        Location = new Point(100, 400)
+                        Location = new Point(100, 450)
                     };
 
                     PictureBox picHotelName = new PictureBox
@@ -622,7 +622,7 @@ namespace biuropodrozyprojekt
                         Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\hotelname.png")),
                         Size = new Size(35, 35),
                         SizeMode = PictureBoxSizeMode.StretchImage,
-                        Location = new Point(60, 390)
+                        Location = new Point(60, 440)
                     };
 
                     Label lblHotelRating = new Label
@@ -631,7 +631,7 @@ namespace biuropodrozyprojekt
                         Font = new Font("Century Gothic", 13),
                         Width = 220,
                         TextAlign = ContentAlignment.MiddleLeft,
-                        Location = new Point(100, 450)
+                        Location = new Point(100, 500)
                     };
 
                     PictureBox picRating = new PictureBox
@@ -639,10 +639,62 @@ namespace biuropodrozyprojekt
                         Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\star.png")),
                         Size = new Size(35, 35),
                         SizeMode = PictureBoxSizeMode.StretchImage,
-                        Location = new Point(60, 440)
+                        Location = new Point(60, 490)
                     };
 
-                    Control[] controlsDetails = { picTravelAgency, picVehicle, lblHotelRating, picRating, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
+
+                    PictureBox picDepart = new PictureBox
+                    {
+                        Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\departurelogo.png")),
+                        Size = new Size(35, 35),
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        Location = new Point(720, 390)
+                    };
+
+                    PictureBox picArr = new PictureBox
+                    {
+                        Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\arrivallogo.png")),
+                        Size = new Size(35, 35),
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        Location = new Point(720, 440)
+                    };
+
+                    Label lblArr = new Label
+                    {
+                        Text = "arrival: " + vacation.ArrivalDate,
+                        Font = new Font("Century Gothic", 13),
+                        Width = 220,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Location = new Point(picArr.Right + 5, picArr.Top)
+                    };
+
+                    Label lblDepart = new Label
+                    {
+                        Text = "departure: " + vacation.DepartureDate,
+                        Font = new Font("Century Gothic", 13),
+                        Width = 250,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Location = new Point(760, 400)
+                    };
+
+                    PictureBox picprice = new PictureBox
+                    {
+                        Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\dollar.png")),
+                        Size = new Size(35, 35),
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        Location = new Point(720, 490)
+                    };
+
+                    Label lblprice = new Label
+                    {
+                        Text = "price ($): " + vacation.Price.ToString(),
+                        Font = new Font("Century Gothic", 13),
+                        Width = 250,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Location = new Point(picprice.Right + 5, picprice.Top)
+                    };
+
+                    Control[] controlsDetails = { picTravelAgency, picVehicle, picArr, picprice,  lblprice, picDepart, lblArr, lblDepart, lblHotelRating, picRating, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
 
                     panelDetails.Controls.AddRange(controlsDetails);
                     flowLayoutPanelDetails.Controls.Add(panelDetails);
