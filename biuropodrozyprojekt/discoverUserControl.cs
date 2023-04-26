@@ -590,16 +590,42 @@ namespace biuropodrozyprojekt
                         Location = new Point(230, 230)
                     };
 
+
+                    PictureBox picVehicle = new PictureBox
+                    {
+                        Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\types.png")),
+                        Size = new Size(35, 35),
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        Location = new Point(60, 340),
+                    };
+
                     Label lblVehicleType = new Label
                     {
                         Text = "way of travel: " + vacation.VehicleType,
                         Font = new Font("Century Gothic", 13),
                         Width = 220,
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        Location = new Point(30, 350)
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Location = new Point(100, 350)
                     };
 
-                    Control[] controlsDetails = { picTravelAgency, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
+                    Label lblHotelName = new Label
+                    {
+                        Text = "hotel: " + vacation.HotelName,
+                        Font = new Font("Century Gothic", 13),
+                        Width = 220,
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Location = new Point(100, 400)
+                    };
+
+                    PictureBox picHotelName = new PictureBox
+                    {
+                        Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\hotelname.png")),
+                        Size = new Size(35, 35),
+                        SizeMode = PictureBoxSizeMode.StretchImage,
+                        Location = new Point(60, 390)
+                    };
+
+                    Control[] controlsDetails = { picTravelAgency, picVehicle, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
 
                     panelDetails.Controls.AddRange(controlsDetails);
                     flowLayoutPanelDetails.Controls.Add(panelDetails);
