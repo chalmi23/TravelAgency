@@ -14,7 +14,7 @@ namespace biuropodrozyprojekt
         private int CityId;
         private string CityName;
         private int CountryId;
-        //#test2
+        //#test3
         public int CityIdGS { get => CityId; set => CityId = value; }
         public string CityNameGS { get => CityName; set => CityName = value; }
         public int CountryIdGS { get => CountryId; set => CountryId = value; }
