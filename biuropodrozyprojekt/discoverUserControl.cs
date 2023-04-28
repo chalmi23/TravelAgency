@@ -15,24 +15,10 @@ namespace biuropodrozyprojekt
 {   
     public partial class discoverUserControl : UserControl
     {
-
         public discoverUserControl()
         {
             InitializeComponent();
         }
-
-        string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
-
-        public partial class VacationInfoForm : Form
-        {
-            private readonly int _vacationId;
-
-            public VacationInfoForm(int vacationId)
-            {
-                _vacationId = vacationId;
-            }
-        }
-      
         private void button1_Click(object sender, EventArgs e)
         {
             Form form2 = new Form()
@@ -52,7 +38,7 @@ namespace biuropodrozyprojekt
                 Dock = DockStyle.Fill
             };
 
-            List<HolidaysValuesClass> vacations = GetAllVacations();
+            List<HolidaysValuesClass> vacations = HolidaysValuesClass.GetAllVacations();
 
             foreach (HolidaysValuesClass vacation in vacations)
             {
@@ -465,37 +451,6 @@ namespace biuropodrozyprojekt
 
             }
         }
-
-        List<HolidaysValuesClass> GetAllVacations()
-        {
-            List<HolidaysValuesClass> vacations = new List<HolidaysValuesClass>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                SqlCommand command = new SqlCommand("SELECT Vacation.VacationId, Country.Country, CountryCity.City, MAX(Photos.Photo) AS Photo, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationID = Vacation.VacationId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId INNER JOIN Country ON Country.CountryId = Vacation.CountryId LEFT JOIN Photos ON Photos.VacationId = Vacation.VacationId GROUP BY Vacation.VacationId, Country.Country, CountryCity.City, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople", connection);
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if (!reader.IsDBNull(3)&& !reader.IsDBNull(4))
-                    {
-                        HolidaysValuesClass vacation = new HolidaysValuesClass(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), (byte[])reader["Photo"], reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
-                        vacations.Add(vacation);
-                    }
-                    else
-                    {
-                        HolidaysValuesClass vacation = new HolidaysValuesClass(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), null, reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
-                        vacations.Add(vacation);
-                    }
-                }
-            }
-
-            return vacations;
-        }
-
         private Image GetPhoto(byte[] imageBytes)
         {
             try

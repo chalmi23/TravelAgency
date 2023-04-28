@@ -23,8 +23,9 @@ namespace biuropodrozyprojekt
         public int NumberOfPeopleGS { get => NumberOfPeople; set => NumberOfPeople = value; }
 
 
-        public UserVacationClass addUserVacation(int vacationId, int maxPeople, int userId, int numberOfPeople)
+        public static UserVacationClass addUserVacation(int vacationId, int maxPeople, int userId, int numberOfPeople)
         {
+            string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
