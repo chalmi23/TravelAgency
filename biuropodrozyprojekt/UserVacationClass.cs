@@ -34,7 +34,7 @@ namespace biuropodrozyprojekt
                 {
                     command.CommandText = "UPDATE Vacation SET MaxPeople = @maxPeople WHERE VacationId = @vacationId";
                     command.Parameters.AddWithValue("@vacationId", vacationId);
-                    command.Parameters.AddWithValue("@maxPeople", maxPeople);
+                    command.Parameters.AddWithValue("@maxPeople", maxPeople-numberOfPeople);
                     command.ExecuteNonQuery();
                 }
             }

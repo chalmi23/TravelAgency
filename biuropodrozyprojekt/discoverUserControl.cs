@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
 using System.IO;
-using System.Configuration;
 
 namespace biuropodrozyprojekt
 {   
@@ -30,14 +23,12 @@ namespace biuropodrozyprojekt
                 Text = "Discover Holidays with us!",
                 Height = 900,
             };
-
             FlowLayoutPanel flowLayoutPanel1 = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.LeftToRight,
                 AutoScroll = true,
                 Dock = DockStyle.Fill
             };
-
             List<HolidaysValuesClass> vacations = HolidaysValuesClass.GetAllVacations();
 
             foreach (HolidaysValuesClass vacation in vacations)
@@ -210,7 +201,6 @@ namespace biuropodrozyprojekt
 
                 flowLayoutPanel1.Controls.Add(panel);
                 form2.Controls.Add(flowLayoutPanel1);
-
                 form2.Show();
 
                 btnDetails.Click += (s, ev) =>
@@ -273,7 +263,6 @@ namespace biuropodrozyprojekt
                         Location = new Point(230, 230)
                     };
 
-
                     PictureBox picVehicle = new PictureBox
                     {
                         Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\types.png")),
@@ -324,7 +313,6 @@ namespace biuropodrozyprojekt
                         SizeMode = PictureBoxSizeMode.StretchImage,
                         Location = new Point(60, 490)
                     };
-
 
                     PictureBox picDepart = new PictureBox
                     {
@@ -390,13 +378,15 @@ namespace biuropodrozyprojekt
 
                     NumericUpDown numericUpDown = new NumericUpDown()
                     {
-                        BackColor = SystemColors.Window,
+                        BackColor = SystemColors.Window, 
                         ForeColor = SystemColors.WindowText,
                         Font = new Font("Century Gothic", 14, FontStyle.Bold),
-                        Location = new Point(720, 650),
-                        Width = 80,
+                        Location = new Point(720, 650), 
+                        Width = 80, 
                         Height = 20,
-                        DecimalPlaces = 0,
+                        DecimalPlaces = 0, 
+                        Maximum = 5, 
+                        Minimum = 1,
                     };
 
                     Label label = new Label()
@@ -418,7 +408,6 @@ namespace biuropodrozyprojekt
                         Font = new Font("Century Gothic", 12),
                         TextAlign = ContentAlignment.TopCenter
                     };
-
                     List<byte[]> photos = vacation.GetPhotosForTrip(vacation.VacationIdGS);
 
                     Control[] controlsDetails = { picTravelAgency, label, labelDiscover, picVehicle, picArr, numericUpDown, picprice, btnReserve, lblprice, picDepart, lblArr, lblDepart, lblHotelRating, picRating, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
@@ -434,21 +423,26 @@ namespace biuropodrozyprojekt
                             Image = GetPhoto(photoBytes),
                             SizeMode = PictureBoxSizeMode.Zoom
                         };
-
                         flowLayoutPanelDetails.Controls.Add(pictureBoxPhotos);
                     }
-
                     formDetails.Controls.Add(flowLayoutPanelDetails);
                     formDetails.Show();
 
                     btnReserve.Click += new EventHandler((senderApply, eApply) =>
                     {
-                        UserVacationClass userVacation = new UserVacationClass();
-                        userVacation.addUserVacation(vacation.VacationIdGS, vacation.MaxPeopleGS, Form1.idUser,(int)numericUpDown.Value);
-                        formDetails.Close();
+                        HolidaysValuesClass vacationCheck = HolidaysValuesClass.GetOneTrip(vacation.VacationIdGS);
+                        if ((int)numericUpDown.Value <= vacationCheck.MaxPeopleGS)
+                        {
+                            UserVacationClass.addUserVacation(vacation.VacationIdGS, vacation.MaxPeopleGS, Form1.idUser, (int)numericUpDown.Value);
+                            vacation.MaxPeopleGS = vacation.MaxPeopleGS - (int)numericUpDown.Value;
+                            formDetails.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("There aren't as many free spots available as needed. Only " + vacationCheck.MaxPeopleGS + " are left.", "Info", MessageBoxButtons.OK);
+                        }
                     });
                 };
-
             }
         }
         private Image GetPhoto(byte[] imageBytes)
