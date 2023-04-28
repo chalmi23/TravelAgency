@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,5 +51,33 @@ namespace biuropodrozyprojekt
         public string ArrivalDateGS { get => ArrivalDate; set => ArrivalDate = value; }
         public int PriceGS { get => Price; set => Price = value; }
         public int MaxPeopleGS { get => MaxPeople; set => MaxPeople = value; }
+
+        string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+
+        public List<byte[]> GetPhotosForTrip(int tripId)
+        {
+            List<byte[]> photos = new List<byte[]>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("SELECT Photo FROM Photos WHERE VacationId = @tripId", connection);
+                command.Parameters.AddWithValue("@tripId", tripId);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    byte[] photoBytes = reader.IsDBNull(0) ? null : (byte[])reader.GetValue(0);
+                    if (photoBytes != null)
+                    {
+                        photos.Add(photoBytes);
+                    }
+                }
+            }
+
+            return photos;
+        }
     }
 }

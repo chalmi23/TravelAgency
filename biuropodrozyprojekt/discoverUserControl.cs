@@ -433,22 +433,26 @@ namespace biuropodrozyprojekt
                         TextAlign = ContentAlignment.TopCenter
                     };
 
-                    PictureBox pictureBoxes = new PictureBox
-                    {
-                        Width = 1000,
-                        Height = 800,
-                        Image = GetPhoto(vacation.PhotoBytesGS),
-                        SizeMode = PictureBoxSizeMode.Zoom                
-                    };
+                    List<byte[]> photos = vacation.GetPhotosForTrip(vacation.VacationIdGS);
 
                     Control[] controlsDetails = { picTravelAgency, label, labelDiscover, picVehicle, picArr, numericUpDown, picprice, btnReserve, lblprice, picDepart, lblArr, lblDepart, lblHotelRating, picRating, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
-
                     panelDetails.Controls.AddRange(controlsDetails);
-
                     flowLayoutPanelDetails.Controls.Add(panelDetails);
-                    flowLayoutPanelDetails.Controls.Add(pictureBoxes);
-                    formDetails.Controls.Add(flowLayoutPanelDetails);
 
+                    foreach (byte[] photoBytes in photos)
+                    {
+                        PictureBox pictureBoxPhotos = new PictureBox
+                        {
+                            Width = 1000,
+                            Height = 800,
+                            Image = GetPhoto(photoBytes),
+                            SizeMode = PictureBoxSizeMode.Zoom
+                        };
+
+                        flowLayoutPanelDetails.Controls.Add(pictureBoxPhotos);
+                    }
+
+                    formDetails.Controls.Add(flowLayoutPanelDetails);
                     formDetails.Show();
 
                     btnReserve.Click += new EventHandler((senderApply, eApply) =>
