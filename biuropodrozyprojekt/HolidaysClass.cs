@@ -21,7 +21,7 @@ namespace biuropodrozyprojekt
         private int HotelRating;
         private int VehicleId;
         private string ShortDescription;
-
+        //#test
         public int VacationIdGS { get => VacationId; set => VacationId = value; }
         public int TypeIdGS { get => TypeId; set => TypeId = value; }
         public int CountryIdGS { get => CountryId; set => CountryId = value; }
