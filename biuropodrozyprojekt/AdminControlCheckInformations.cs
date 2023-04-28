@@ -928,10 +928,7 @@ namespace biuropodrozyprojekt
 
                     while (reader.Read())
                     {
-                        int id = (int)reader["CityId"];
-                        string name = reader["City"].ToString();
-                        int countryId = (int)reader["CountryId"];
-                        CityClass item = new CityClass { CityIdGS = id, CityNameGS = name, CountryIdGS = countryId };
+                        CityClass item = new CityClass { CityIdGS = (int)reader["CityId"], CityNameGS = reader["City"].ToString(), CountryIdGS = (int)reader["CountryId"] };
                         comboBoxCities.Items.Add(item.CityNameGS);
 
                         if (holiday.CityIdGS == item.CityIdGS)
@@ -1159,7 +1156,6 @@ namespace biuropodrozyprojekt
                     Height = 25
                 };
 
-
                 DateTime date;
                 if (DateTime.TryParseExact(dateTrip.DepartureDateGS, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
                 {
@@ -1242,7 +1238,6 @@ namespace biuropodrozyprojekt
 
             DataSet dataSet = new DataSet();
             DataTable UserVacationTable = new DataTable("UserVacation");
-
 
             dataGridView.DataBindings.Clear();
             dataGridView.Columns.Clear();
@@ -1764,7 +1759,6 @@ namespace biuropodrozyprojekt
                 }               
             }
         }
-
         private void addNewTripButton_Click(object sender, EventArgs e)
         {
             Form form = new Form
@@ -1840,17 +1834,13 @@ namespace biuropodrozyprojekt
 
             comboBoxCountries.SelectedIndexChanged += (senderCity, eCity) =>
             {
-                string selectedCountry = comboBoxCountries.SelectedItem.ToString();
-
                 comboBoxCities.Items.Clear();
-
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
                     SqlCommand command = new SqlCommand("SELECT City FROM CountryCity WHERE CountryId = (SELECT CountryId FROM Country WHERE Country = @SelectedCountry)", connection);
-                    command.Parameters.AddWithValue("@SelectedCountry", selectedCountry);
-
+                    command.Parameters.AddWithValue("@SelectedCountry", comboBoxCountries.SelectedItem.ToString());
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -1866,7 +1856,6 @@ namespace biuropodrozyprojekt
                     {
                         comboBoxCities.Text = null;
                     }
-
                 }
             };
 
@@ -2065,7 +2054,6 @@ namespace biuropodrozyprojekt
                 Height = 25
             };
 
-
             Button btnAdd = new Button
             {
                 Text = "Add trip",
@@ -2084,12 +2072,9 @@ namespace biuropodrozyprojekt
                 holiday.addNewVacation(comboBoxTypeName.SelectedIndex + 1, comboBoxCountries.Text.ToString(), comboBoxCities.Text.ToString(), numericPrice.Value, dateTimePicker.Value.ToString("dd.MM.yyyy"), dateTimePickerArrival.Value.ToString("dd.MM.yyyy"), (int)numericPeople.Value, textBoxHotelName.Text.ToString(), (int)numericHotelRating.Value, comboBoxVehicleType.SelectedIndex + 1, textBoxShortDescription.Text.ToString());
                 form.Close();
             });
-
-
             Control[] controlsDetails = { btnAdd, textBoxShortDescription, labelShortDescription, dateTimePicker, dateTimePickerArrival, labelDepartureDate, labelArrivalDate, labelCountry, comboBoxVehicleType, comboBoxCountries, labelCity, comboBoxCities, labelType, comboBoxTypeName, labelPeople , numericPeople, numericHotelRating, numericPrice, labelHotelName, labelHotelRating, labelPrice, labelVehicleType, textBoxHotelName};
 
             form.Controls.AddRange(controlsDetails);
-
             form.Show();
         }
     }
