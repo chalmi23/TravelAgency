@@ -73,12 +73,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="addTripAdminControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="addTripAdminControl.Designer.cs">
-      <DependentUpon>addTripAdminControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="AdminControlCheckInformations.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -112,6 +106,7 @@
     </Compile>
     <Compile Include="HolidayDateClass.cs" />
     <Compile Include="HolidaysClass.cs" />
+    <Compile Include="HolidaysValuesClass.cs" />
     <Compile Include="logowanieUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -145,9 +140,7 @@
     <Compile Include="UserForm.Designer.cs">
       <DependentUpon>UserForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="addTripAdminControl.resx">
-      <DependentUpon>addTripAdminControl.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="UserVacationClass.cs" />
     <EmbeddedResource Include="AdminControlCheckInformations.resx">
       <DependentUpon>AdminControlCheckInformations.cs</DependentUpon>
     </EmbeddedResource>

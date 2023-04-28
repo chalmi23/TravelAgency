@@ -21,7 +21,7 @@ namespace biuropodrozyprojekt
         private int HotelRating;
         private int VehicleId;
         private string ShortDescription;
-        
+
         public int VacationIdGS { get => VacationId; set => VacationId = value; }
         public int TypeIdGS { get => TypeId; set => TypeId = value; }
         public int CountryIdGS { get => CountryId; set => CountryId = value; }
@@ -113,6 +113,39 @@ namespace biuropodrozyprojekt
                     command.ExecuteNonQuery();
                 }
                 MessageBox.Show("Trip edited succesfully!", "AdminTool", MessageBoxButtons.OK);
+            }
+        }
+
+        public void addNewVacation(int typeId, string country, string city, decimal price, string departureDate, string arrivalDate, int maxPeople, string hotelName, int hotelRating, int vehicleId, string shortDescription)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "INSERT INTO Vacation (TypeId, CountryId, CityId, Price, MaxPeople, HotelName, HotelRating, VehicleId, ShortDescription) VALUES (@typeId, (SELECT CountryId FROM Country WHERE Country = @country), (SELECT CityId FROM CountryCity WHERE City = @city), @price, @maxPeople, @hotelName, @hotelRating, @vehicleId, @shortDescription); SELECT SCOPE_IDENTITY()";
+                    command.Parameters.AddWithValue("@typeId", typeId);
+                    command.Parameters.AddWithValue("@country", country);
+                    command.Parameters.AddWithValue("@city", city);
+                    command.Parameters.AddWithValue("@price", price);
+                    command.Parameters.AddWithValue("@maxPeople", maxPeople);
+                    command.Parameters.AddWithValue("@hotelName", hotelName);
+                    command.Parameters.AddWithValue("@hotelRating", hotelRating);
+                    command.Parameters.AddWithValue("@vehicleId", vehicleId);
+                    command.Parameters.AddWithValue("@shortDescription", shortDescription);
+                    int vacationId = Convert.ToInt32(command.ExecuteScalar());
+
+                    using (SqlCommand command2 = connection.CreateCommand())
+                    {
+                        command2.CommandText = "INSERT INTO DateVacation (DepartureDate, ArrivalDate, VacationId) VALUES (@departureDate, @arrivalDate, @vacationId)";
+                        command2.Parameters.AddWithValue("@departureDate", departureDate);
+                        command2.Parameters.AddWithValue("@arrivalDate", arrivalDate);
+                        command2.Parameters.AddWithValue("@vacationId", vacationId);
+                        command2.ExecuteNonQuery();
+                    }
+                    MessageBox.Show("Trip added succesfully!", "AdminTool", MessageBoxButtons.OK);
+                }
             }
         }
     }
