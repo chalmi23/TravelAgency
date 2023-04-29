@@ -100,8 +100,7 @@ namespace biuropodrozyprojekt
             btnDelete.Click += new EventHandler((senderDelete, eDelete) =>
             {
                 var selectedRow = dataGridView.SelectedRows[0];
-                int userId = (int)selectedRow.Cells[0].Value;
-                user.DeleteUser(userId);
+                user.DeleteUser((int)selectedRow.Cells[0].Value);
                 form.Close();
             });
 
@@ -110,12 +109,8 @@ namespace biuropodrozyprojekt
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
-                int rowIndex = e2.RowIndex;
-                DataGridViewRow row = dataGridView.Rows[rowIndex];
-                int userId = (int)row.Cells["UserId"].Value;
-
-
-                user = user.GetUser(userId);
+                DataGridViewRow row = dataGridView.Rows[e2.RowIndex];
+                user = user.GetUser((int)row.Cells["UserId"].Value);
 
                 Form formUser = new Form()
                 {
@@ -351,21 +346,17 @@ namespace biuropodrozyprojekt
             btnDelete.Click += new EventHandler((senderDelete, eDelete) =>
             {
                 var selectedRow = dataGridView.SelectedRows[0];
-                int countryId = (int)selectedRow.Cells[0].Value;
-                country.DeleteCountry(countryId);
+                country.DeleteCountry((int)selectedRow.Cells[0].Value);
                 form.Close();
             });
-
             form.Controls.Add(btnDelete);
-
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
                 int rowIndex = e2.RowIndex;
                 DataGridViewRow row = dataGridView.Rows[rowIndex];
-                int countryId = (int)row.Cells["CountryId"].Value;
 
-                country = country.GetCountry(countryId);
+                country = country.GetCountry((int)row.Cells["CountryId"].Value);
 
                 Form formCountry = new Form()
                 {
@@ -446,7 +437,7 @@ namespace biuropodrozyprojekt
 
                 btnApply.Click += new EventHandler((senderApply, eApply) =>
                 {
-                    country.UpdateCountry(countryId, textBoxCountryName.Text.ToString());
+                    country.UpdateCountry((int)row.Cells["CountryId"].Value, textBoxCountryName.Text.ToString());
                     formCountry.Close();
                     form.Close();
                 });

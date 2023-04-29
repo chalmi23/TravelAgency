@@ -20,11 +20,9 @@ namespace biuropodrozyprojekt
         {
             InitializeComponent();
         }
-
-
         string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 
-    DataGridView dataGridView = new DataGridView()
+        DataGridView dataGridView = new DataGridView()
         {
             SelectionMode = DataGridViewSelectionMode.FullRowSelect,
             GridColor = Color.Gray,
@@ -36,7 +34,6 @@ namespace biuropodrozyprojekt
             Height = 150,
             Width = 310,
             Location = new Point(15, 279),
-
         };
         private void showProfileInformations(object sender, EventArgs e)
         {
@@ -45,7 +42,6 @@ namespace biuropodrozyprojekt
             dataGridView.Columns.Clear();
             dataGridView.DataSource = null;
 
-            int tmp = Form1.idUser;
             cancelReservationButton.Visible = true;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -53,7 +49,7 @@ namespace biuropodrozyprojekt
                 SqlDataAdapter adapter = new SqlDataAdapter();
 
                 SqlCommand command = new SqlCommand("SELECT * FROM Users WHERE UserId = @UserId", connection);
-                command.Parameters.AddWithValue("@UserId", tmp);
+                command.Parameters.AddWithValue("@UserId", Form1.idUser);
                 adapter.SelectCommand = command;
 
                 DataTable usersTable = new DataTable();
@@ -66,9 +62,8 @@ namespace biuropodrozyprojekt
                 changePasswordTx.Text = usersTable.Rows[0]["UserPassword"].ToString();
                 changeEmailTx.Text = usersTable.Rows[0]["UserMail"].ToString();
 
-                // Pobierz informacje o rezerwacjach
                 command = new SqlCommand("SELECT * FROM UserVacation WHERE UserId = @UserId", connection);
-                command.Parameters.AddWithValue("@UserId", tmp);
+                command.Parameters.AddWithValue("@UserId", Form1.idUser);
                 adapter.SelectCommand = command;
 
                 DataTable reservationsTable = new DataTable();
@@ -94,11 +89,9 @@ namespace biuropodrozyprojekt
 
                 DataTable tripsTable = new DataTable();
                 foreach (DataRow row in reservationsTable.Rows)
-                {
-                    int tripId = (int)row["VacationId"];
-                    
+                {   
                     command = new SqlCommand("SELECT Country.Country, UserVacation.NumberOfPeople, UserVacation.Id, UserVacation.VacationId FROM Vacation INNER JOIN UserVacation ON UserVacation.VacationId = Vacation.VacationId INNER JOIN Country ON Country.CountryId = Vacation.CountryId WHERE Vacation.VacationId = @VacationId", connection);
-                    command.Parameters.AddWithValue("@VacationId", tripId);
+                    command.Parameters.AddWithValue("@VacationId", (int)row["VacationId"]);
                     
                     adapter.SelectCommand = command;                   
                     adapter.Fill(tripsTable);
@@ -117,14 +110,13 @@ namespace biuropodrozyprojekt
             try
             {
                 var selectedRow = dataGridView.SelectedRows[0];
-                int reservationId = (int)selectedRow.Cells[0].Value;
             
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
                     SqlCommand command = new SqlCommand("DELETE FROM UserVacation WHERE Id = @Id", connection);
-                    command.Parameters.AddWithValue("@Id", reservationId);
+                    command.Parameters.AddWithValue("@Id", (int)selectedRow.Cells[0].Value);
                     command.ExecuteNonQuery();
 
                     int reservedSeats = (int)selectedRow.Cells[2].Value;
@@ -145,7 +137,7 @@ namespace biuropodrozyprojekt
                 MessageBox.Show("Choose reservation!", "Error 404", MessageBoxButtons.OK);
             }
         }
-            #region Changes
+        #region Changes
 
         private void changeEmailBtn_Click(object sender, EventArgs e)
         {
@@ -161,7 +153,6 @@ namespace biuropodrozyprojekt
                 }
                 else
                 {
-                    int tmp = Form1.idUser;
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
                         connection.Open();
@@ -171,7 +162,7 @@ namespace biuropodrozyprojekt
                             command.Parameters.AddWithValue("@UserName", changeLoginTx.Text);
                             command.Parameters.AddWithValue("@UserPassword", changePasswordTx.Text);
                             command.Parameters.AddWithValue("@UserMail", changeEmailTx.Text);
-                            command.Parameters.AddWithValue("@UserId", tmp);
+                            command.Parameters.AddWithValue("@UserId", Form1.idUser);
                             command.ExecuteNonQuery();
                             MessageBox.Show("User data has been updated successfully!", "Success", MessageBoxButtons.OK);
                         }
