@@ -16,13 +16,11 @@ namespace biuropodrozyprojekt
         private string Password;
         private string Email;
         private int Role;
-        //test
         public int UserIdGS { get => UserId; set => UserId = value; }
         public string UserNameGS { get => UserName; set => UserName = value; }
         public string PasswordGS { get => Password; set => Password = value; }
         public string EmailGS { get => Email; set => Email = value; }
         public int RoleGS { get => Role; set => Role = value; }
-
 
         string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 

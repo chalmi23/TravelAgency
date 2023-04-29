@@ -15,9 +15,6 @@ namespace biuropodrozyprojekt
         private int VacationId;
         private int NumberOfPeople;
 
-
-        string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
-
         public int UserIdGS { get => UserId; set => UserId = value; }
         public int VacationIdGS { get => VacationId; set => VacationId = value; }
         public int NumberOfPeopleGS { get => NumberOfPeople; set => NumberOfPeople = value; }

@@ -89,7 +89,6 @@ namespace biuropodrozyprojekt
                 connection.Open();
 
                 SqlCommand command = new SqlCommand("SELECT Vacation.VacationId, Country.Country, CountryCity.City, MAX(Photos.Photo) AS Photo, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationID = Vacation.VacationId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId INNER JOIN Country ON Country.CountryId = Vacation.CountryId LEFT JOIN Photos ON Photos.VacationId = Vacation.VacationId GROUP BY Vacation.VacationId, Country.Country, CountryCity.City, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople", connection);
-
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
