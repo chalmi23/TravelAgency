@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,5 +51,90 @@ namespace biuropodrozyprojekt
         public string ArrivalDateGS { get => ArrivalDate; set => ArrivalDate = value; }
         public int PriceGS { get => Price; set => Price = value; }
         public int MaxPeopleGS { get => MaxPeople; set => MaxPeople = value; }
+
+        string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+
+        public List<byte[]> GetPhotosForTrip(int tripId)
+        {
+            List<byte[]> photos = new List<byte[]>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("SELECT Photo FROM Photos WHERE VacationId = @tripId", connection);
+                command.Parameters.AddWithValue("@tripId", tripId);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    byte[] photoBytes = reader.IsDBNull(0) ? null : (byte[])reader.GetValue(0);
+                    if (photoBytes != null)
+                    {
+                        photos.Add(photoBytes);
+                    }
+                }
+            }
+
+            return photos;
+        }
+
+        public static List<HolidaysValuesClass> GetAllVacations()
+        {
+            List<HolidaysValuesClass> vacations = new List<HolidaysValuesClass>();
+            string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("SELECT Vacation.VacationId, Country.Country, CountryCity.City, MAX(Photos.Photo) AS Photo, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationID = Vacation.VacationId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId INNER JOIN Country ON Country.CountryId = Vacation.CountryId LEFT JOIN Photos ON Photos.VacationId = Vacation.VacationId GROUP BY Vacation.VacationId, Country.Country, CountryCity.City, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople", connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if (!reader.IsDBNull(3) && !reader.IsDBNull(4))
+                    {
+                        HolidaysValuesClass vacation = new HolidaysValuesClass(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), (byte[])reader["Photo"], reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
+                        vacations.Add(vacation);
+                    }
+                    else
+                    {
+                        HolidaysValuesClass vacation = new HolidaysValuesClass(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), null, reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
+                        vacations.Add(vacation);
+                    }
+                }
+            }
+
+            return vacations;
+        }
+
+        public static HolidaysValuesClass GetOneTrip(int tripId)
+        {
+            string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("SELECT Vacation.VacationId, Country.Country, CountryCity.City, MAX(Photos.Photo) AS Photo, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationID = Vacation.VacationId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId INNER JOIN Country ON Country.CountryId = Vacation.CountryId LEFT JOIN Photos ON Photos.VacationId = Vacation.VacationId  WHERE Vacation.VacationId=@VacationId GROUP BY Vacation.VacationId, Country.Country, CountryCity.City, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople", connection);
+                command.Parameters.AddWithValue("@VacationId", tripId);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if (!reader.IsDBNull(3) && !reader.IsDBNull(4))
+                    {
+                        HolidaysValuesClass vacation = new HolidaysValuesClass(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), (byte[])reader["Photo"], reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
+                        return vacation;
+                    }
+                    else
+                    {
+                        HolidaysValuesClass vacation = new HolidaysValuesClass(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), null, reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
+                        return vacation;
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

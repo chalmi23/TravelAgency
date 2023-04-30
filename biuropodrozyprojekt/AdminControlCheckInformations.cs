@@ -100,8 +100,7 @@ namespace biuropodrozyprojekt
             btnDelete.Click += new EventHandler((senderDelete, eDelete) =>
             {
                 var selectedRow = dataGridView.SelectedRows[0];
-                int userId = (int)selectedRow.Cells[0].Value;
-                user.DeleteUser(userId);
+                user.DeleteUser((int)selectedRow.Cells[0].Value);
                 form.Close();
             });
 
@@ -110,12 +109,8 @@ namespace biuropodrozyprojekt
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
-                int rowIndex = e2.RowIndex;
-                DataGridViewRow row = dataGridView.Rows[rowIndex];
-                int userId = (int)row.Cells["UserId"].Value;
-
-
-                user = user.GetUser(userId);
+                DataGridViewRow row = dataGridView.Rows[e2.RowIndex];
+                user = user.GetUser((int)row.Cells["UserId"].Value);
 
                 Form formUser = new Form()
                 {
@@ -351,21 +346,17 @@ namespace biuropodrozyprojekt
             btnDelete.Click += new EventHandler((senderDelete, eDelete) =>
             {
                 var selectedRow = dataGridView.SelectedRows[0];
-                int countryId = (int)selectedRow.Cells[0].Value;
-                country.DeleteCountry(countryId);
+                country.DeleteCountry((int)selectedRow.Cells[0].Value);
                 form.Close();
             });
-
             form.Controls.Add(btnDelete);
-
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
                 int rowIndex = e2.RowIndex;
                 DataGridViewRow row = dataGridView.Rows[rowIndex];
-                int countryId = (int)row.Cells["CountryId"].Value;
 
-                country = country.GetCountry(countryId);
+                country = country.GetCountry((int)row.Cells["CountryId"].Value);
 
                 Form formCountry = new Form()
                 {
@@ -446,7 +437,7 @@ namespace biuropodrozyprojekt
 
                 btnApply.Click += new EventHandler((senderApply, eApply) =>
                 {
-                    country.UpdateCountry(countryId, textBoxCountryName.Text.ToString());
+                    country.UpdateCountry((int)row.Cells["CountryId"].Value, textBoxCountryName.Text.ToString());
                     formCountry.Close();
                     form.Close();
                 });
@@ -779,8 +770,7 @@ namespace biuropodrozyprojekt
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
-                int rowIndex = e2.RowIndex;
-                DataGridViewRow row = dataGridView.Rows[rowIndex];
+                DataGridViewRow row = dataGridView.Rows[e2.RowIndex];
                 int tripId = (int)row.Cells["VacationId"].Value;
 
                 holiday = holiday.GetHolidays(tripId);
@@ -886,10 +876,7 @@ namespace biuropodrozyprojekt
                     int selectedCountryIndex = -1;
                     while (reader.Read())
                     {
-                        int id = (int)reader["CountryId"];
-                        string name = reader["Country"].ToString();
-
-                        CountryClass item = new CountryClass { CountryIdGS = id, CountryNameGS = name };
+                        CountryClass item = new CountryClass { CountryIdGS = (int)reader["CountryId"], CountryNameGS = reader["Country"].ToString() };
                         comboBoxCountries.Items.Add(item.CountryNameGS);
 
                         if (holiday.CountryIdGS == item.CountryIdGS)
@@ -928,10 +915,7 @@ namespace biuropodrozyprojekt
 
                     while (reader.Read())
                     {
-                        int id = (int)reader["CityId"];
-                        string name = reader["City"].ToString();
-                        int countryId = (int)reader["CountryId"];
-                        CityClass item = new CityClass { CityIdGS = id, CityNameGS = name, CountryIdGS = countryId };
+                        CityClass item = new CityClass { CityIdGS = (int)reader["CityId"], CityNameGS = reader["City"].ToString(), CountryIdGS = (int)reader["CountryId"] };
                         comboBoxCities.Items.Add(item.CityNameGS);
 
                         if (holiday.CityIdGS == item.CityIdGS)
@@ -1159,7 +1143,6 @@ namespace biuropodrozyprojekt
                     Height = 25
                 };
 
-
                 DateTime date;
                 if (DateTime.TryParseExact(dateTrip.DepartureDateGS, "dd.MM.yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
                 {
@@ -1242,7 +1225,6 @@ namespace biuropodrozyprojekt
 
             DataSet dataSet = new DataSet();
             DataTable UserVacationTable = new DataTable("UserVacation");
-
 
             dataGridView.DataBindings.Clear();
             dataGridView.Columns.Clear();
@@ -1328,7 +1310,6 @@ namespace biuropodrozyprojekt
             };
 
             form.Controls.Add(btnDelete);
-
             form.Show();
         }
 
@@ -1388,14 +1369,12 @@ namespace biuropodrozyprojekt
                 Location = new Point(20, 20),
                 Font = new Font("Century Gothic", 12),
             };
-            form.Controls.Add(labelCountryName);
 
             TextBox textBoxCountryName = new TextBox()
             {
                 Width = 200,
                 Location = new Point(120, 20),
             };
-            form.Controls.Add(textBoxCountryName);
 
             Button buttonAddCountry = new Button()
             {
@@ -1407,7 +1386,8 @@ namespace biuropodrozyprojekt
                 BackColor = SystemColors.ButtonHighlight,
             };
 
-            form.Controls.Add(buttonAddCountry);
+            Control[] controlsDetails = { buttonAddCountry, textBoxCountryName, labelCountryName };
+            form.Controls.AddRange(controlsDetails);
             form.Show();
 
             buttonAddCountry.Click += (sender, e) =>
@@ -1448,23 +1428,20 @@ namespace biuropodrozyprojekt
                 Location = new Point(20, 20),
                 Font = new Font("Century Gothic", 12),
             };
-            form.Controls.Add(labelCityName);
 
             TextBox textBoxCityName = new TextBox()
             {
                 Width = 200,
                 Location = new Point(120, 20),
             };
-            form.Controls.Add(textBoxCityName);
 
             Label labelCountryName = new Label()
             {
-                Text = "Country:",
-                Width = 100,
-                Location = new Point(20, 60),
-                Font = new Font("Century Gothic", 12),
-                };
-            form.Controls.Add(labelCountryName);
+            Text = "Country:",
+            Width = 100,
+            Location = new Point(20, 60),
+            Font = new Font("Century Gothic", 12),
+            };
 
             ComboBox comboBoxCountryName = new ComboBox()
             {
@@ -1473,10 +1450,8 @@ namespace biuropodrozyprojekt
                 DisplayMember = "Country",
                 ValueMember = "CountryId",
             };
-            form.Controls.Add(comboBoxCountryName);
 
             DataTable countriesTable = new DataTable();
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -1498,7 +1473,9 @@ namespace biuropodrozyprojekt
                 BackColor = SystemColors.ButtonHighlight,
                 Font = new Font("Century Gothic", 12),
             };
-            form.Controls.Add(buttonAddCity);
+
+            Control[] controlsDetails = { buttonAddCity, comboBoxCountryName , labelCountryName , textBoxCityName , labelCityName };
+            form.Controls.AddRange(controlsDetails);
 
             buttonAddCity.Click += (sender2, e2) =>
             {
@@ -1535,14 +1512,12 @@ namespace biuropodrozyprojekt
                 Location = new Point(20, 20),
                 Font = new Font("Century Gothic", 12),
             };
-            form.Controls.Add(labelUserName);
 
             TextBox textBoxUserName = new TextBox
             {
                 Width = 200,
                 Location = new Point(140, 20),
             };
-            form.Controls.Add(textBoxUserName);
 
             Label labelUserPassword = new Label
             {
@@ -1551,14 +1526,12 @@ namespace biuropodrozyprojekt
                 Location = new Point(20, 60),
                 Font = new Font("Century Gothic", 12),
             };
-            form.Controls.Add(labelUserPassword);
 
             TextBox textBoxUserPassword = new TextBox
             {
                 Width = 200,
                 Location = new Point(140, 60),
             };
-            form.Controls.Add(textBoxUserPassword);
 
             Label labelUserMail = new Label
             {
@@ -1567,14 +1540,12 @@ namespace biuropodrozyprojekt
                 Location = new Point(20, 100),
                 Font = new Font("Century Gothic", 12)
             };
-            form.Controls.Add(labelUserMail);
 
             TextBox textBoxUserMail = new TextBox
             {
                 Width = 200,
                 Location = new Point(140, 100)
             };
-            form.Controls.Add(textBoxUserMail);
 
             Label labelRoleName = new Label
             {
@@ -1583,7 +1554,6 @@ namespace biuropodrozyprojekt
                 Location = new Point(20, 140),
                 Font = new Font("Century Gothic", 12)
             };
-            form.Controls.Add(labelRoleName);
 
             ComboBox comboBoxRoleName = new ComboBox
             {
@@ -1592,7 +1562,6 @@ namespace biuropodrozyprojekt
                 ValueMember = "RoleId",
                 DisplayMember = "RoleName",
             };
-            form.Controls.Add(comboBoxRoleName);
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -1604,7 +1573,6 @@ namespace biuropodrozyprojekt
 
                 DataTable rolesTable = new DataTable();
                 adapter.Fill(rolesTable);
-
                 comboBoxRoleName.DataSource = rolesTable;
             }
             
@@ -1616,21 +1584,15 @@ namespace biuropodrozyprojekt
                 Location = new Point(140, 200),
                 Height = 50,
             };      
-            form.Controls.Add(buttonAdd);
-            buttonAdd.Click += new EventHandler(buttonAdd_Click);
 
+            Control[] controlsDetails = { buttonAdd, comboBoxRoleName, labelRoleName, labelUserName, textBoxUserMail, textBoxUserName, labelUserMail, textBoxUserPassword, labelUserPassword };
+            form.Controls.AddRange(controlsDetails);
             form.Show();
-
-            void buttonAdd_Click(object sender3, EventArgs e3)
+            buttonAdd.Click += (s, eventsargs) =>
             {
-                string userName = textBoxUserName.Text;
-                string userPassword = textBoxUserPassword.Text;
-                string userMail = textBoxUserMail.Text;
-                int roleId = (int)comboBoxRoleName.SelectedValue;
-
                 try
                 {
-                    MailAddress m = new MailAddress(userMail);
+                    MailAddress m = new MailAddress(textBoxUserMail.Text);
                 }
                 catch (FormatException)
                 {
@@ -1648,13 +1610,12 @@ namespace biuropodrozyprojekt
                     connection.Open();
 
                     SqlCommand command = new SqlCommand("INSERT INTO Users (UserName, UserPassword, UserMail, RoleId) VALUES (@UserName, @UserPassword, @UserMail, @RoleId)", connection);
-                    command.Parameters.AddWithValue("@UserName", userName);
-                    command.Parameters.AddWithValue("@UserPassword", userPassword);
-                    command.Parameters.AddWithValue("@UserMail", userMail);
-                    command.Parameters.AddWithValue("@RoleId", roleId);
+                    command.Parameters.AddWithValue("@UserName", textBoxUserName.Text);
+                    command.Parameters.AddWithValue("@UserPassword", textBoxUserPassword.Text);
+                    command.Parameters.AddWithValue("@UserMail", textBoxUserMail.Text);
+                    command.Parameters.AddWithValue("@RoleId", (int)comboBoxRoleName.SelectedValue);
 
-                    int rowsAffected = command.ExecuteNonQuery();
-                    if (rowsAffected > 0)
+                    if (command.ExecuteNonQuery() > 0)
                     {
                         MessageBox.Show("User added successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         form.Close();
@@ -1664,7 +1625,7 @@ namespace biuropodrozyprojekt
                         MessageBox.Show("Error while adding user", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-            }
+            };
         }
         private void button12_Click(object sender, EventArgs e)
         {
@@ -1697,11 +1658,9 @@ namespace biuropodrozyprojekt
             dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 10, FontStyle.Bold);
             dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dataGridView.BackgroundColor = Color.LightGray;
-            form.Controls.Add(dataGridView);
 
             DataSet dataSet = new DataSet();
             DataTable travelTable = new DataTable("Vacation");
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -1725,7 +1684,6 @@ namespace biuropodrozyprojekt
                 Font = new Font("Century Gothic", 12),
                 BackColor = SystemColors.ButtonHighlight,
             };
-            form.Controls.Add(addPhotoButton);
 
             Button sendButton = new Button()
             {
@@ -1736,7 +1694,8 @@ namespace biuropodrozyprojekt
                 Font = new Font("Century Gothic", 12),
                 BackColor = SystemColors.ButtonHighlight,
             };
-            form.Controls.Add(sendButton);
+            Control[] controlsDetails = { sendButton, addPhotoButton, dataGridView};
+            form.Controls.AddRange(controlsDetails);
             form.Show();
 
             byte[] photoPath = null;
@@ -1756,8 +1715,7 @@ namespace biuropodrozyprojekt
 
             sendButton.Click += (sender2, e2) =>
             {
-                int vacationId = (int)dataGridView.SelectedRows[0].Cells["VacationId"].Value;
-                AddPhoto(vacationId, photoPath);
+                AddPhoto((int)dataGridView.SelectedRows[0].Cells["VacationId"].Value, photoPath);
             };
 
             void AddPhoto(int vacationId, byte[] photo)
@@ -1788,7 +1746,6 @@ namespace biuropodrozyprojekt
                 }               
             }
         }
-
         private void addNewTripButton_Click(object sender, EventArgs e)
         {
             Form form = new Form
@@ -1833,10 +1790,7 @@ namespace biuropodrozyprojekt
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    int id = (int)reader["CountryId"];
-                    string name = reader["Country"].ToString();
-
-                    CountryClass item = new CountryClass { CountryIdGS = id, CountryNameGS = name };
+                    CountryClass item = new CountryClass { CountryIdGS = (int)reader["CountryId"], CountryNameGS = reader["Country"].ToString() };
                     comboBoxCountries.Items.Add(item.CountryNameGS);
                     comboBoxCountries.SelectedIndex = 0;
                 }
@@ -1849,22 +1803,17 @@ namespace biuropodrozyprojekt
                 Font = new Font("Century Gothic", 10)
             };
 
-            string selectedCountryName = comboBoxCountries.Items[0].ToString();
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
                 SqlCommand command = new SqlCommand("SELECT CountryCity.CityId, CountryCity.City, Country.CountryId FROM CountryCity INNER JOIN Country ON Country.CountryId = CountryCity.CountryId WHERE Country.Country=@CountryName", connection);
-                command.Parameters.AddWithValue("@CountryName", selectedCountryName);
+                command.Parameters.AddWithValue("@CountryName", comboBoxCountries.Items[0].ToString());
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    int id = (int)reader["CityId"];
-                    string name = reader["City"].ToString();
-                    int countryId = (int)reader["CountryId"];
-                    CityClass item = new CityClass { CityIdGS = id, CityNameGS = name, CountryIdGS = countryId };
+                    CityClass item = new CityClass { CityIdGS = (int)reader["CityId"], CityNameGS = reader["City"].ToString(), CountryIdGS = (int)reader["CountryId"] };
                     comboBoxCities.Items.Add(item.CityNameGS);
                     comboBoxCities.SelectedIndex = 0;
                 }
@@ -1872,17 +1821,13 @@ namespace biuropodrozyprojekt
 
             comboBoxCountries.SelectedIndexChanged += (senderCity, eCity) =>
             {
-                string selectedCountry = comboBoxCountries.SelectedItem.ToString();
-
                 comboBoxCities.Items.Clear();
-
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
                     SqlCommand command = new SqlCommand("SELECT City FROM CountryCity WHERE CountryId = (SELECT CountryId FROM Country WHERE Country = @SelectedCountry)", connection);
-                    command.Parameters.AddWithValue("@SelectedCountry", selectedCountry);
-
+                    command.Parameters.AddWithValue("@SelectedCountry", comboBoxCountries.SelectedItem.ToString());
                     SqlDataReader reader = command.ExecuteReader();
 
                     while (reader.Read())
@@ -1898,7 +1843,6 @@ namespace biuropodrozyprojekt
                     {
                         comboBoxCities.Text = null;
                     }
-
                 }
             };
 
@@ -2097,7 +2041,6 @@ namespace biuropodrozyprojekt
                 Height = 25
             };
 
-
             Button btnAdd = new Button
             {
                 Text = "Add trip",
@@ -2116,12 +2059,9 @@ namespace biuropodrozyprojekt
                 holiday.addNewVacation(comboBoxTypeName.SelectedIndex + 1, comboBoxCountries.Text.ToString(), comboBoxCities.Text.ToString(), numericPrice.Value, dateTimePicker.Value.ToString("dd.MM.yyyy"), dateTimePickerArrival.Value.ToString("dd.MM.yyyy"), (int)numericPeople.Value, textBoxHotelName.Text.ToString(), (int)numericHotelRating.Value, comboBoxVehicleType.SelectedIndex + 1, textBoxShortDescription.Text.ToString());
                 form.Close();
             });
-
-
             Control[] controlsDetails = { btnAdd, textBoxShortDescription, labelShortDescription, dateTimePicker, dateTimePickerArrival, labelDepartureDate, labelArrivalDate, labelCountry, comboBoxVehicleType, comboBoxCountries, labelCity, comboBoxCities, labelType, comboBoxTypeName, labelPeople , numericPeople, numericHotelRating, numericPrice, labelHotelName, labelHotelRating, labelPrice, labelVehicleType, textBoxHotelName};
 
             form.Controls.AddRange(controlsDetails);
-
             form.Show();
         }
     }

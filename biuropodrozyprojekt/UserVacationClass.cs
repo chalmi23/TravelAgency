@@ -15,16 +15,14 @@ namespace biuropodrozyprojekt
         private int VacationId;
         private int NumberOfPeople;
 
-
-        string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
-
         public int UserIdGS { get => UserId; set => UserId = value; }
         public int VacationIdGS { get => VacationId; set => VacationId = value; }
         public int NumberOfPeopleGS { get => NumberOfPeople; set => NumberOfPeople = value; }
 
 
-        public UserVacationClass addUserVacation(int vacationId, int maxPeople, int userId, int numberOfPeople)
+        public static UserVacationClass addUserVacation(int vacationId, int maxPeople, int userId, int numberOfPeople)
         {
+            string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -33,7 +31,7 @@ namespace biuropodrozyprojekt
                 {
                     command.CommandText = "UPDATE Vacation SET MaxPeople = @maxPeople WHERE VacationId = @vacationId";
                     command.Parameters.AddWithValue("@vacationId", vacationId);
-                    command.Parameters.AddWithValue("@maxPeople", maxPeople);
+                    command.Parameters.AddWithValue("@maxPeople", maxPeople-numberOfPeople);
                     command.ExecuteNonQuery();
                 }
             }

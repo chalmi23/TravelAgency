@@ -1,38 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
 using System.IO;
-using System.Configuration;
 
 namespace biuropodrozyprojekt
 {   
     public partial class discoverUserControl : UserControl
     {
-
         public discoverUserControl()
         {
             InitializeComponent();
         }
-
-        string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
-
-        public partial class VacationInfoForm : Form
-        {
-            private readonly int _vacationId;
-
-            public VacationInfoForm(int vacationId)
-            {
-                _vacationId = vacationId;
-            }
-        }
-      
         private void button1_Click(object sender, EventArgs e)
         {
             Form form2 = new Form()
@@ -44,15 +23,13 @@ namespace biuropodrozyprojekt
                 Text = "Discover Holidays with us!",
                 Height = 900,
             };
-
             FlowLayoutPanel flowLayoutPanel1 = new FlowLayoutPanel
             {
                 FlowDirection = FlowDirection.LeftToRight,
                 AutoScroll = true,
                 Dock = DockStyle.Fill
             };
-
-            List<HolidaysValuesClass> vacations = GetAllVacations();
+            List<HolidaysValuesClass> vacations = HolidaysValuesClass.GetAllVacations();
 
             foreach (HolidaysValuesClass vacation in vacations)
             {
@@ -224,7 +201,6 @@ namespace biuropodrozyprojekt
 
                 flowLayoutPanel1.Controls.Add(panel);
                 form2.Controls.Add(flowLayoutPanel1);
-
                 form2.Show();
 
                 btnDetails.Click += (s, ev) =>
@@ -287,7 +263,6 @@ namespace biuropodrozyprojekt
                         Location = new Point(230, 230)
                     };
 
-
                     PictureBox picVehicle = new PictureBox
                     {
                         Image = Image.FromFile(Path.Combine(Application.StartupPath, @"icons\types.png")),
@@ -338,7 +313,6 @@ namespace biuropodrozyprojekt
                         SizeMode = PictureBoxSizeMode.StretchImage,
                         Location = new Point(60, 490)
                     };
-
 
                     PictureBox picDepart = new PictureBox
                     {
@@ -404,13 +378,15 @@ namespace biuropodrozyprojekt
 
                     NumericUpDown numericUpDown = new NumericUpDown()
                     {
-                        BackColor = SystemColors.Window,
+                        BackColor = SystemColors.Window, 
                         ForeColor = SystemColors.WindowText,
                         Font = new Font("Century Gothic", 14, FontStyle.Bold),
-                        Location = new Point(720, 650),
-                        Width = 80,
+                        Location = new Point(720, 650), 
+                        Width = 80, 
                         Height = 20,
-                        DecimalPlaces = 0,
+                        DecimalPlaces = 0, 
+                        Maximum = 5, 
+                        Minimum = 1,
                     };
 
                     Label label = new Label()
@@ -432,66 +408,43 @@ namespace biuropodrozyprojekt
                         Font = new Font("Century Gothic", 12),
                         TextAlign = ContentAlignment.TopCenter
                     };
-
-                    PictureBox pictureBoxes = new PictureBox
-                    {
-                        Width = 1000,
-                        Height = 800,
-                        Image = GetPhoto(vacation.PhotoBytesGS),
-                        SizeMode = PictureBoxSizeMode.Zoom                
-                    };
+                    List<byte[]> photos = vacation.GetPhotosForTrip(vacation.VacationIdGS);
 
                     Control[] controlsDetails = { picTravelAgency, label, labelDiscover, picVehicle, picArr, numericUpDown, picprice, btnReserve, lblprice, picDepart, lblArr, lblDepart, lblHotelRating, picRating, picHotelName, lblHotelName, lblCountryDetails, lblVehicleType, lblCityDetails, lblShortDesc };
-
                     panelDetails.Controls.AddRange(controlsDetails);
-
                     flowLayoutPanelDetails.Controls.Add(panelDetails);
-                    flowLayoutPanelDetails.Controls.Add(pictureBoxes);
-                    formDetails.Controls.Add(flowLayoutPanelDetails);
 
+                    foreach (byte[] photoBytes in photos)
+                    {
+                        PictureBox pictureBoxPhotos = new PictureBox
+                        {
+                            Width = 1000,
+                            Height = 800,
+                            Image = GetPhoto(photoBytes),
+                            SizeMode = PictureBoxSizeMode.Zoom
+                        };
+                        flowLayoutPanelDetails.Controls.Add(pictureBoxPhotos);
+                    }
+                    formDetails.Controls.Add(flowLayoutPanelDetails);
                     formDetails.Show();
 
                     btnReserve.Click += new EventHandler((senderApply, eApply) =>
                     {
-                        UserVacationClass userVacation = new UserVacationClass();
-                        userVacation.addUserVacation(vacation.VacationIdGS, vacation.MaxPeopleGS, Form1.idUser,(int)numericUpDown.Value);
-                        formDetails.Close();
+                        HolidaysValuesClass vacationCheck = HolidaysValuesClass.GetOneTrip(vacation.VacationIdGS);
+                        if ((int)numericUpDown.Value <= vacationCheck.MaxPeopleGS)
+                        {
+                            UserVacationClass.addUserVacation(vacation.VacationIdGS, vacation.MaxPeopleGS, Form1.idUser, (int)numericUpDown.Value);
+                            vacation.MaxPeopleGS = vacation.MaxPeopleGS - (int)numericUpDown.Value;
+                            formDetails.Close();
+                        }
+                        else
+                        {
+                            MessageBox.Show("There aren't as many free spots available as needed. Only " + vacationCheck.MaxPeopleGS + " are left.", "Info", MessageBoxButtons.OK);
+                        }
                     });
                 };
-
             }
         }
-
-        List<HolidaysValuesClass> GetAllVacations()
-        {
-            List<HolidaysValuesClass> vacations = new List<HolidaysValuesClass>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                SqlCommand command = new SqlCommand("SELECT Vacation.VacationId, Country.Country, CountryCity.City, MAX(Photos.Photo) AS Photo, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationID = Vacation.VacationId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId INNER JOIN Country ON Country.CountryId = Vacation.CountryId LEFT JOIN Photos ON Photos.VacationId = Vacation.VacationId GROUP BY Vacation.VacationId, Country.Country, CountryCity.City, Vacation.ShortDescription, VehicleType.VehicleName, Vacation.HotelName, Vacation.HotelRating, DateVacation.DepartureDate, DateVacation.ArrivalDate, Vacation.Price, Vacation.MaxPeople", connection);
-
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if (!reader.IsDBNull(3)&& !reader.IsDBNull(4))
-                    {
-                        HolidaysValuesClass vacation = new HolidaysValuesClass(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), (byte[])reader["Photo"], reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
-                        vacations.Add(vacation);
-                    }
-                    else
-                    {
-                        HolidaysValuesClass vacation = new HolidaysValuesClass(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), null, reader.GetString(4), reader.GetString(5), reader.GetString(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9), reader.GetInt32(10), reader.GetInt32(11));
-                        vacations.Add(vacation);
-                    }
-                }
-            }
-
-            return vacations;
-        }
-
         private Image GetPhoto(byte[] imageBytes)
         {
             try
