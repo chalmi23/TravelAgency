@@ -1291,8 +1291,6 @@ namespace biuropodrozyprojekt
                         command.Parameters.AddWithValue("@Id", reservationId);
                         command.ExecuteNonQuery();
 
-
-
                         command = new SqlCommand("UPDATE Vacation SET MaxPeople = MaxPeople + @reservedSeats WHERE VacationId = @vacationId", connection);
                         command.Parameters.AddWithValue("@reservedSeats", reservedSeats);
                         command.Parameters.AddWithValue("@vacationId", vacationId);
