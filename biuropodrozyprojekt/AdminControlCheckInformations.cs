@@ -770,8 +770,7 @@ namespace biuropodrozyprojekt
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
-                int rowIndex = e2.RowIndex;
-                DataGridViewRow row = dataGridView.Rows[rowIndex];
+                DataGridViewRow row = dataGridView.Rows[e2.RowIndex];
                 int tripId = (int)row.Cells["VacationId"].Value;
 
                 holiday = holiday.GetHolidays(tripId);
@@ -877,10 +876,7 @@ namespace biuropodrozyprojekt
                     int selectedCountryIndex = -1;
                     while (reader.Read())
                     {
-                        int id = (int)reader["CountryId"];
-                        string name = reader["Country"].ToString();
-
-                        CountryClass item = new CountryClass { CountryIdGS = id, CountryNameGS = name };
+                        CountryClass item = new CountryClass { CountryIdGS = (int)reader["CountryId"], CountryNameGS = reader["Country"].ToString() };
                         comboBoxCountries.Items.Add(item.CountryNameGS);
 
                         if (holiday.CountryIdGS == item.CountryIdGS)
