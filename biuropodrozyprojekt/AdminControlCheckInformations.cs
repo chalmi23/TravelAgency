@@ -266,8 +266,6 @@ namespace biuropodrozyprojekt
                     formUser.Close();
                     form.Close();
                 });
-
-
                 Control[] controlsDetails = { btnApply, labelRole, comboBoxRoleName, labelUserId, labelUserId2, labelUserName, textBoxUserName, labelPassword, textBoxPassword, labelEmail, textBoxEmail };
 
                 panel.Controls.AddRange(controlsDetails);
@@ -353,8 +351,7 @@ namespace biuropodrozyprojekt
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
-                int rowIndex = e2.RowIndex;
-                DataGridViewRow row = dataGridView.Rows[rowIndex];
+                DataGridViewRow row = dataGridView.Rows[e2.RowIndex];
 
                 country = country.GetCountry((int)row.Cells["CountryId"].Value);
 
@@ -503,8 +500,7 @@ namespace biuropodrozyprojekt
             btnDelete.Click += new EventHandler((senderDelete, eDelete) =>
             {
                 var selectedRow = dataGridView.SelectedRows[0];
-                int cityId = (int)selectedRow.Cells[0].Value;
-                city.DeleteCity(cityId);
+                city.DeleteCity((int)selectedRow.Cells[0].Value);
                 form.Close();
             });
 
@@ -530,8 +526,7 @@ namespace biuropodrozyprojekt
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
-                int rowIndex = e2.RowIndex;
-                DataGridViewRow row = dataGridView.Rows[rowIndex];
+                DataGridViewRow row = dataGridView.Rows[e2.RowIndex];
                 int cityId = (int)row.Cells["CityId"].Value;
                 city = city.GetCity(cityId);
 
