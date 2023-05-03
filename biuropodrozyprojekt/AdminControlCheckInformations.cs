@@ -1182,7 +1182,6 @@ namespace biuropodrozyprojekt
                 formTrip.Controls.Add(flowLayoutPanelTrip);
                 formTrip.Show();
 
-
                 btnUpdate.Click += new EventHandler((senderApply, eApply) =>
                 {
                     labelCountry.Text = comboBoxCountries.Text.ToString();
