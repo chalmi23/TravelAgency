@@ -119,12 +119,9 @@ namespace biuropodrozyprojekt
                     command.Parameters.AddWithValue("@Id", (int)selectedRow.Cells[0].Value);
                     command.ExecuteNonQuery();
 
-                    int reservedSeats = (int)selectedRow.Cells[2].Value;
-                    int vacationId = (int)selectedRow.Cells[3].Value;
-
                     command = new SqlCommand("UPDATE Vacation SET MaxPeople = MaxPeople + @reservedSeats WHERE VacationId = @vacationId", connection);
-                    command.Parameters.AddWithValue("@reservedSeats", reservedSeats);
-                    command.Parameters.AddWithValue("@vacationId", vacationId);
+                    command.Parameters.AddWithValue("@reservedSeats", (int)selectedRow.Cells[2].Value);
+                    command.Parameters.AddWithValue("@vacationId", (int)selectedRow.Cells[3].Value);
 
                     command.ExecuteNonQuery();
                     MessageBox.Show("Reservation canceled!", "Info", MessageBoxButtons.OK);
