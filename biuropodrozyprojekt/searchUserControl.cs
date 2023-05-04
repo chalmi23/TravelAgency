@@ -63,59 +63,5 @@ namespace biuropodrozyprojekt
                 dataGridView1.Columns[7].Width = 70;
             }
         }
-
-        private void nationalButton_Click(object sender, EventArgs e)
-        {
-            dataGridView1.DataBindings.Clear();
-            dataGridView1.Columns.Clear();
-            dataGridView1.DataSource = null;
-            
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter();
-                SqlCommand command = new SqlCommand("SELECT DISTINCT TypeOfVacation.TypeName AS 'Trip type', Country.Country, CountryCity.City, Vacation.HotelName AS 'Hotel Name', Vacation.HotelRating AS 'Hotel Rating', Vacation.MaxPeople AS 'Free places', VehicleType.VehicleName AS 'Type of Vehicle', Vacation.Price AS 'Price($)', DateVacation.DepartureDate AS Departure, DateVacation.ArrivalDate as Arrival  FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationId = Vacation.VacationId INNER JOIN Country ON Country.CountryId = Vacation.CountryId INNER JOIN TypeOfVacation ON TypeOfVacation.TypeId = Vacation.TypeId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId WHERE Vacation.TypeId = 1", connection);
-                
-                command.Parameters.AddWithValue("@search", searchTx.Text);
-                adapter.SelectCommand = command;
-
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-
-                dataGridView1.DataSource = dataTable;
-                dataGridView1.Columns[1].Width = 112;
-                dataGridView1.Columns[2].Width = 105;
-                dataGridView1.Columns[4].Width = 70;
-                dataGridView1.Columns[5].Width = 70;
-                dataGridView1.Columns[7].Width = 70;
-            }
-        }
-
-        private void internationalButton_Click(object sender, EventArgs e)
-        {
-            dataGridView1.DataBindings.Clear();
-            dataGridView1.Columns.Clear();
-            dataGridView1.DataSource = null;
-            
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter();
-
-                SqlCommand command = new SqlCommand("SELECT DISTINCT TypeOfVacation.TypeName AS 'Trip type', Country.Country, CountryCity.City, Vacation.HotelName AS 'Hotel Name', Vacation.HotelRating AS 'Hotel Rating', Vacation.MaxPeople AS 'Free places', VehicleType.VehicleName AS 'Type of Vehicle', Vacation.Price AS 'Price($)', DateVacation.DepartureDate AS Departure, DateVacation.ArrivalDate as Arrival  FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationId = Vacation.VacationId INNER JOIN Country ON Country.CountryId = Vacation.CountryId INNER JOIN TypeOfVacation ON TypeOfVacation.TypeId = Vacation.TypeId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId WHERE Vacation.TypeId = 2", connection);
-                command.Parameters.AddWithValue("@search", searchTx.Text);
-                adapter.SelectCommand = command;
-
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
-
-                dataGridView1.DataSource = dataTable;
-                dataGridView1.Columns[1].Width = 112;
-                dataGridView1.Columns[2].Width = 105;
-                dataGridView1.Columns[4].Width = 70;
-                dataGridView1.Columns[5].Width = 70;
-                dataGridView1.Columns[7].Width = 70;
-            }
-        }
     }
 }
