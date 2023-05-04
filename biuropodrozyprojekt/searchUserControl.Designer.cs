@@ -34,10 +34,6 @@ namespace biuropodrozyprojekt
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.nationalButton = new System.Windows.Forms.Button();
-            this.internationalButton = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -85,52 +81,6 @@ namespace biuropodrozyprojekt
             this.label2.TabIndex = 3;
             this.label2.Text = "e.g. Poland, Warsaw";
             // 
-            // nationalButton
-            // 
-            this.nationalButton.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.nationalButton.Location = new System.Drawing.Point(732, 51);
-            this.nationalButton.Margin = new System.Windows.Forms.Padding(2);
-            this.nationalButton.Name = "nationalButton";
-            this.nationalButton.Size = new System.Drawing.Size(78, 28);
-            this.nationalButton.TabIndex = 6;
-            this.nationalButton.Text = "apply";
-            this.nationalButton.UseVisualStyleBackColor = true;
-            this.nationalButton.Click += new System.EventHandler(this.nationalButton_Click);
-            // 
-            // internationalButton
-            // 
-            this.internationalButton.Font = new System.Drawing.Font("Century Gothic", 11F);
-            this.internationalButton.Location = new System.Drawing.Point(734, 108);
-            this.internationalButton.Margin = new System.Windows.Forms.Padding(2);
-            this.internationalButton.Name = "internationalButton";
-            this.internationalButton.Size = new System.Drawing.Size(76, 28);
-            this.internationalButton.TabIndex = 7;
-            this.internationalButton.Text = "apply";
-            this.internationalButton.UseVisualStyleBackColor = true;
-            this.internationalButton.Click += new System.EventHandler(this.internationalButton_Click);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 14F);
-            this.label4.Location = new System.Drawing.Point(728, 24);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(180, 22);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Show national trips";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Century Gothic", 14F);
-            this.label5.Location = new System.Drawing.Point(730, 81);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(220, 22);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Show international trips";
-            // 
             // dataGridView1
             // 
             this.dataGridView1.BackgroundColor = System.Drawing.Color.LightGray;
@@ -146,10 +96,6 @@ namespace biuropodrozyprojekt
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.internationalButton);
-            this.Controls.Add(this.nationalButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
@@ -171,13 +117,6 @@ namespace biuropodrozyprojekt
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button nationalButton;
-        private System.Windows.Forms.Button internationalButton;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
         private DataGridView dataGridView1;
-
-        public Button NationalButton { get => nationalButton; set => nationalButton = value; }
-        public Button InternationalButton { get => internationalButton; set => internationalButton = value; }
     }
 }

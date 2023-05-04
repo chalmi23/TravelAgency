@@ -266,8 +266,6 @@ namespace biuropodrozyprojekt
                     formUser.Close();
                     form.Close();
                 });
-
-
                 Control[] controlsDetails = { btnApply, labelRole, comboBoxRoleName, labelUserId, labelUserId2, labelUserName, textBoxUserName, labelPassword, textBoxPassword, labelEmail, textBoxEmail };
 
                 panel.Controls.AddRange(controlsDetails);
@@ -353,8 +351,7 @@ namespace biuropodrozyprojekt
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
-                int rowIndex = e2.RowIndex;
-                DataGridViewRow row = dataGridView.Rows[rowIndex];
+                DataGridViewRow row = dataGridView.Rows[e2.RowIndex];
 
                 country = country.GetCountry((int)row.Cells["CountryId"].Value);
 
@@ -503,8 +500,7 @@ namespace biuropodrozyprojekt
             btnDelete.Click += new EventHandler((senderDelete, eDelete) =>
             {
                 var selectedRow = dataGridView.SelectedRows[0];
-                int cityId = (int)selectedRow.Cells[0].Value;
-                city.DeleteCity(cityId);
+                city.DeleteCity((int)selectedRow.Cells[0].Value);
                 form.Close();
             });
 
@@ -530,8 +526,7 @@ namespace biuropodrozyprojekt
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
-                int rowIndex = e2.RowIndex;
-                DataGridViewRow row = dataGridView.Rows[rowIndex];
+                DataGridViewRow row = dataGridView.Rows[e2.RowIndex];
                 int cityId = (int)row.Cells["CityId"].Value;
                 city = city.GetCity(cityId);
 
@@ -755,7 +750,6 @@ namespace biuropodrozyprojekt
 
             Control[] controlsDetails = { btnDelete };
             form.Controls.AddRange(controlsDetails);
-
             form.Show();
 
             HolidaysClass holiday = new HolidaysClass();
@@ -763,17 +757,14 @@ namespace biuropodrozyprojekt
             btnDelete.Click += new EventHandler((senderDelete, eDelete) =>
             {
                 var selectedRow = dataGridView.SelectedRows[0];
-                int tripId = (int)selectedRow.Cells[0].Value;
-                holiday.DeleteTrip(tripId);
+                holiday.DeleteTrip((int)selectedRow.Cells[0].Value);
                 form.Close();
             });
 
             dataGridView.CellDoubleClick += (sender2, e2) =>
             {
                 DataGridViewRow row = dataGridView.Rows[e2.RowIndex];
-                int tripId = (int)row.Cells["VacationId"].Value;
-
-                holiday = holiday.GetHolidays(tripId);
+                holiday = holiday.GetHolidays((int)row.Cells["VacationId"].Value);
 
                 Form formTrip = new Form()
                 {
@@ -927,8 +918,6 @@ namespace biuropodrozyprojekt
 
                 comboBoxCountries.SelectedIndexChanged += (senderCity, eCity) =>
                 {
-                    string selectedCountry = comboBoxCountries.SelectedItem.ToString();
-
                     comboBoxCities.Items.Clear();
 
                     using (SqlConnection connection = new SqlConnection(connectionString))
@@ -936,7 +925,7 @@ namespace biuropodrozyprojekt
                         connection.Open();
 
                         SqlCommand command = new SqlCommand("SELECT City FROM CountryCity WHERE CountryId = (SELECT CountryId FROM Country WHERE Country = @SelectedCountry)", connection);
-                        command.Parameters.AddWithValue("@SelectedCountry", selectedCountry);
+                        command.Parameters.AddWithValue("@SelectedCountry", comboBoxCountries.SelectedItem.ToString());
 
                         SqlDataReader reader = command.ExecuteReader();
 
@@ -1192,7 +1181,6 @@ namespace biuropodrozyprojekt
                 flowLayoutPanelTrip.Controls.Add(panel);
                 formTrip.Controls.Add(flowLayoutPanelTrip);
                 formTrip.Show();
-
 
                 btnUpdate.Click += new EventHandler((senderApply, eApply) =>
                 {
