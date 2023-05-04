@@ -445,7 +445,7 @@ namespace biuropodrozyprojekt
                 };
             }
         }
-        private Image GetPhoto(byte[] imageBytes)
+        public Image GetPhoto(byte[] imageBytes)
         {
             try
             {
