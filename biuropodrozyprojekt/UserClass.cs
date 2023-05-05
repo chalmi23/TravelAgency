@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Configuration;
 
@@ -32,7 +27,6 @@ namespace biuropodrozyprojekt
 
                 SqlCommand command = new SqlCommand("SELECT UserId, UserName, UserPassword, UserMail, RoleId FROM Users WHERE UserID = @userId", connection);
                 command.Parameters.AddWithValue("@userId", userId);
-
                 SqlDataReader reader = command.ExecuteReader();
 
                 if (reader.Read())

@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.Sql;
-using System.Net.Mail;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.Configuration;
@@ -92,15 +83,14 @@ namespace biuropodrozyprojekt
                         {
                             this.Hide();
 
-                            int roleId = reader.GetInt32(reader.GetOrdinal("RoleId"));
                             int userId = reader.GetInt32(reader.GetOrdinal("UserId"));
                             idUser = userId;
 
-                            if (roleId == 1)
+                            if (reader.GetInt32(reader.GetOrdinal("RoleId")) == 1)
                             {
                                 adminForm.ShowDialog();
                             }
-                            else if (roleId == 2)
+                            else if (reader.GetInt32(reader.GetOrdinal("RoleId")) == 2)
                             {
                                 userForm.ShowDialog();
                             }
