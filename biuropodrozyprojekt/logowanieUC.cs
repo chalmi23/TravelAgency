@@ -14,6 +14,11 @@ namespace biuropodrozyprojekt
         {
             EventHandler click = loginClick;
             click?.Invoke(this, e);
-        }     
+        }
+
+        private void logowanieUC_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
