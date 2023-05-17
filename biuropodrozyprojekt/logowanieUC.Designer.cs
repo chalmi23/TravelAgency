@@ -103,6 +103,7 @@ namespace biuropodrozyprojekt
             this.Controls.Add(this.loginTx);
             this.Name = "logowanieUC";
             this.Size = new System.Drawing.Size(182, 195);
+            this.Load += new System.EventHandler(this.logowanieUC_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
