@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.IO;
-//test2
+
 namespace biuropodrozyprojekt
 {
     public partial class searchUserControl : UserControl

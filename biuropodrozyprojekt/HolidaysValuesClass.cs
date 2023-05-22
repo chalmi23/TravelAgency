@@ -101,7 +101,6 @@ namespace biuropodrozyprojekt
                     }
                 }
             }
-
             return vacations;
         }
 

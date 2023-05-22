@@ -29,7 +29,6 @@ namespace biuropodrozyprojekt
         public int VehicleIdGS { get => VehicleId; set => VehicleId = value; }
         public string ShortDescriptionGS { get => ShortDescription; set => ShortDescription = value; }
 
-
         string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
 
         public HolidaysClass GetHolidays(int holidaysId)
@@ -40,7 +39,6 @@ namespace biuropodrozyprojekt
 
                 SqlCommand command = new SqlCommand("SELECT VacationId, TypeId, CountryId, CityId, MaxPeople, Price, HotelName, HotelRating, VehicleId, ShortDescription FROM Vacation WHERE VacationId = @holidaysId", connection);
                 command.Parameters.AddWithValue("@holidaysId", holidaysId);
-
                 SqlDataReader reader = command.ExecuteReader();
 
                 if (reader.Read())
