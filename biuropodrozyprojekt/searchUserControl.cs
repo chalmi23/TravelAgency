@@ -39,7 +39,6 @@ namespace biuropodrozyprojekt
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-
                 connection.Open();
                 SqlDataAdapter adapter = new SqlDataAdapter();
                 SqlCommand command = new SqlCommand("SELECT DISTINCT Vacation.VacationId, TypeOfVacation.TypeName AS 'Trip type', Country.Country, CountryCity.City, Vacation.HotelName AS 'Hotel Name', Vacation.HotelRating AS 'Hotel Rating', Vacation.MaxPeople AS 'Free places', VehicleType.VehicleName AS 'Type of Vehicle', Vacation.Price AS 'Price($)', DateVacation.DepartureDate AS Departure, DateVacation.ArrivalDate as Arrival  FROM Vacation INNER JOIN DateVacation ON DateVacation.VacationId = Vacation.VacationId INNER JOIN Country ON Country.CountryId = Vacation.CountryId INNER JOIN TypeOfVacation ON TypeOfVacation.TypeId = Vacation.TypeId INNER JOIN VehicleType ON VehicleType.VehicleId = Vacation.VehicleId INNER JOIN CountryCity ON CountryCity.CityId = Vacation.CityId WHERE Country.Country LIKE '%' + @search + '%' OR CountryCity.City LIKE '%' + @search + '%' OR Vacation.HotelName LIKE '%' + @search + '%' OR Vacation.HotelRating LIKE '%' + @search + '%' OR DateVacation.ArrivalDate LIKE '%' + @search + '%' OR DateVacation.DepartureDate LIKE '%' + @search + '%'  OR VehicleType.VehicleName LIKE '%' + @search + '%' OR Vacation.Price LIKE '%' + @search + '%' OR TypeOfVacation.TypeName LIKE '%' + @search + '%'", connection);
